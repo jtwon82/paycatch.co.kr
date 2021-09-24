@@ -1,0 +1,67 @@
+<div>Content</div>
+	<div>Content</div>
+	<div>Content</div>
+	<div>Content</div>
+	<div>Content</div>
+	<div>Content</div>
+	<div>Content</div>
+	<div>Content</div>
+	<div>Content</div>
+	<div>Content</div>
+	<div>Content</div>
+	<div>Content</div>
+	<div>Content</div>
+	<div>Content</div>
+	<div>Content</div>
+	<div>Content</div>
+	<div>Content</div>
+	<div>Content</div>
+	<div>Content</div>
+	<div>Content</div>
+	<div>Content</div>
+	<div>Content</div>
+	<div>Content</div>
+	<div>Content</div>
+	<div>Content</div>
+	<div>Content</div>
+	<div>Content</div>
+	<div>Content</div>
+	<div>Content</div>
+	<div>Content</div>
+	<div>Content</div>
+	<div>Content</div>
+	<div>Content</div>
+	<div>Content</div>
+	<div>Content</div>
+	<div>Content</div>
+	<div>Content</div>
+	<div>Content</div>
+	<div>Content</div>
+	<div>Content</div>
+	<div>Content</div>
+	<div>Content</div>
+	<div>Content</div>
+	<div>Content</div>
+	<div>Content</div>
+	<div>Content</div>
+	<div>Content</div>
+	<div>Content</div>
+	<a href="#" id="load">Load More</a>
+
+<style>
+	div { display:none; }
+</style>
+
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script>
+	$(function(){
+		$("div").slice(0, 10).show();
+		$("#load").click(function(e){
+			e.preventDefault();
+			$("div:hidden").slice(0, 10).show();
+			if($("div:hidden").length == 0){
+				alert("No more divs");
+			}
+		});
+	});
+</script>

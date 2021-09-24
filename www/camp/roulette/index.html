@@ -1,0 +1,429 @@
+<?
+	session_start();
+	include "../../event/common/function.php";
+	include "../../event/common/db.php";
+	include "../../event/common/counter.php";
+
+?>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta http-equiv="Cache-Control" content="no-cache">
+    <meta name="format-detection" content="telephone=no, address=no, email=no">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="http://paycatch.co.kr/camp/roulette/">
+    <meta property="og:title" content="paycatch">
+    <meta property="og:description" content="paycatch">
+    <meta property="og:image" content="http://paycatch.co.kr/camp/roulette/img/thumb.jpg">
+    <meta name="twitter:image" content="http://paycatch.co.kr/camp/roulette/img/thumb.jpg">
+    <title>paycatch</title>
+	<link rel="stylesheet" href="/css/font-awesome.css">
+<!--     <link rel="stylesheet" href="css/font.css?st=<?=rand()?>"> -->
+    <link rel="stylesheet" href="css/reset.css?st=<?=rand()?>">
+	<link rel="stylesheet" href="/css/font-awesome.css">
+	<link href="css/swiper.min.css" rel="stylesheet" type="text/css"/>
+
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.3.3/gsap.min.js"></script>
+	<script type="text/javascript" src="/js/jquery-library.js?st=<?=rand()?>"></script>
+	<script type="text/javascript" src="js/swiper.min.js"></script>
+	<script type="text/javascript" src="js/common.js?st=<?=rand()?>"></script>
+	<script type="text/javascript" src="js/event.lib.js?st=<?=rand()?>"></script>
+
+	<!-- jQuery Modal -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
+    <link rel="stylesheet" href="css/common.css?st=<?=rand()?>">
+
+	<script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
+	<script src="https://ads-partners.coupang.com/g.js"></script>
+
+</head>
+<body>
+
+
+    <div style="background-color: #ff517e24;">
+        <div id="wrap" class="wrapper">
+            <div class="title_wrap ">
+		<?
+			if($_SESSION[USER][LOGIN_NAME]!=""){
+		?>
+                <div class="btn_allmenu menu_btn"><a href="#"><i class="fa fa-bars fa-2x" ></i></a></div>
+				<a href="javascript:;" class="btn-home kakao" onclick="window.shareGift();"><i class="fa fa-comments fa-2x" ></i></a>
+		<?
+			} else {
+		?>
+				<a href="/member/kakao/login.php" class="btn-home"><i class="fa fa-comments fa-2x" ></i></a>
+		<?
+			}
+		?>
+
+                <div class="page_title ft-color">매일 룰렛에 도전하자!</div>
+            </div>
+
+			<!-- //nav -->
+			<div class="allmenu_wrap ">
+				<div class="top_area">
+					<div class="name">
+						<em><?=$_SESSION[USER][LOGIN_NAME]?></em>님
+					</div>
+					<ul class="office">
+						<li>보유포인트 : <span>0</span></li>
+					</ul>
+					<div class="btn_area">
+					<!--	<a href="/member/edit/">내 정보 수정하기</a> -->
+						<a id="" class="btn_logout" href="/member/logout.php">로그아웃</a>
+					</div>
+				</div>
+
+				<nav>
+					<ul>
+						<!--	<li><a href="/"><i class="fa fa-pencil-square-o" ></i> 리뷰</a></li> -->
+						<!--	<li><a href="/"><i class="fa fa-tags" ></i> 상품</a></li> -->
+						<!--	<li><a href="/"><i class="fa fa-archive" ></i> 이벤트</a></li> -->
+						<!--	<li><a href="/"><i class="fa fa-send" ></i> 생활정보</a></li> -->
+						<!--	<li><a href="/"><i class="fa fa-mortar-board" ></i> 랭킹</a></li> -->
+					</ul>
+				</nav>
+
+				<!--	<button class="allmenu_close"> -->
+				<!--		<img src="img/menu_cancel.png" alt="닫기"> -->
+				<!--	</button> -->
+			</div>
+			<!-- //nav -->
+
+            <div class="event_roulette">
+                <img src="img/event_kv02.png" alt="">
+                <div class="roulette_box">
+                    <div class="roulette obj">
+                        <img src="img/event_kv02_coupon1.png" alt="꽝">
+                        <img src="img/event_kv02_coupon2.png" alt="당첨">
+                        <img src="img/event_kv02_coupon3.png" alt="당첨">
+                        <img src="img/event_kv02_coupon1.png" alt="꽝">
+                        <img src="img/event_kv02_coupon4.png" alt="당첨">
+                        <img src="img/event_kv02_coupon2.png" alt="당첨">
+                    </div>
+
+                    <a href="javascript:;" class="btn_roulette">
+                        <img src="img/event_kv02_btn2.png" alt="룰렛 돌리기">
+                    </a>
+                </div>
+            </div>
+
+			<div class="event_roulette_coupangad" >
+				<iframe src="https://ads-partners.coupang.com/widgets.html?id=373753&template=carousel&trackingCode=AF0843132&subId=&width=700&height=50" width="350" height="100" frameborder="0" scrolling="no" referrerpolicy="unsafe-url"></iframe>
+			</div>
+
+			<div class="board_write_wrap" style="height: 200px; overflow: auto;">
+				<br>
+				<p>※ 유의사항 ※</p>
+				<p>1. 이벤트 기간 :</p>
+				<p>&nbsp;- 매일 응모</p>
+				<br>
+				<p>2. 운영 안내 :</p>
+				<p>&nbsp;- 당첨은 본이벤트 페이지를 통해서만 가능합니다.</p>
+				<p>&nbsp;- 1인 참여는 일별 10회로 제한합니다.</p>
+				<p>&nbsp;- 1인 SNS로 얻을 수 있는 추가 참여기회는 9회까지 가능합니다.</p>
+				<p>&nbsp;- 1인 경품은 최대 1회까지 당첨이 가능합니다.</p>
+				<br>
+				<p>&nbsp;- 이벤트 응모를 위해 입력하신 개인정보는 개인정보 제공 동의 아래 안전하게 수집되며, 탈퇴시 안전하게 폐기됩니다.</p>
+				<p>&nbsp;- 이벤트 참여 후 휴대폰 명의 변경 및 해지 시 당첨 취소 처리가 될 수 있습니다.</p>
+				<p>&nbsp;- 이벤트 참여 시 정확한 개인정보를 입력하셔야 경품 수령이 가능하며, 추후 수령 여부 확인이 가능합니다.</p>
+				<p>&nbsp;- 입력하신 개인정보는 추후 변경이 불가합니다.</p>
+				<br>
+				<p>&nbsp;- 경품은 이벤트 종료 후 2주 안에 일괄 발송 되며, 발송일은 이벤트 사정에 따라 별도 고지 없이 변결 될 수 있습니다.</p>
+				<p>&nbsp;- 경품 구성은 이벤트 사정에 따라 별도 고지 없이 변경 될 수 있습니다.</p>
+				<p>&nbsp;- 경품은 양도/양수 되지 않으며, 타 상품으로 교환 및 환불이 불가합니다.</p>
+				<p>&nbsp;- 경품 선정의 경우, 이벤트 응모 시 작성해주신 각 제품을 선택한 사유에 대하여 내부 심사 후 랜덤으로 최종 결정됩니다.</p>
+				<br>
+				<p>&nbsp;- 비정상적이거나 불법적인 방법으로 이벤트 참여시 당첨이 불가하며, 당첨 후에도 별도의 고지 없이 당첨이 취소될 수 있습니다.</p>
+				<p>&nbsp;- 이벤트 참여 시 오류가 발생한 경우 본 이벤트 페이지 하단 댓글 게시판으로 문의 주시거나, 연락처로 문의 주시면 안내 드리겠습니다.</p>
+				<p>&nbsp;- 모바일로 이벤트 참여 시 가입하신 통신 요금제에 따라 데이터 통화료가 부과될 수 있습니다.</p>
+				<br>
+				<p>3. 연락처 안내 :</p>
+				<p>&nbsp;- weespk@kakao.com</p>
+				<br>
+			</div>
+			<div class="event_roulette_coupangad" style="">
+				<p>"이 포스팅은 쿠팡 파트너스 활동의 일환으로, 이에 따른 일정액의 수수료를 제공받습니다."</p>
+			</div>
+
+			<div class="board_write_wrap">
+				<form name="form_reply">
+					<div class="write_box">
+						<textarea name='contents' id='contents' placeholder="댓글을 작성해주세요."></textarea>
+						<span class="editBtnList" >
+							<a href="#" onclick="if (!reply.regist()) { return false; }" >댓글 달기</a>
+						</span>
+					</div>
+				</form>
+
+				<div class="view_area">
+				</div>
+
+				<div class="btn_area page_more">
+					<a href="javascript: reply.load('more');" class="btn_more">더보기</a>
+				</div>
+			</div>
+
+        </div>
+        <!-- //wrap -->
+
+        <div class="w_intro_bottom w_only">
+<!--             <img src="img/flogo.png" alt=""> -->
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+<!-- popup_wrap -->
+	<div id="modal-alert" class="modal alert" data-backdrop="static">
+		<span class='hide'><a href="#modal-alert" rel="modal:open" class="modal-alert"></a></span>
+		<p class="main_txt"></p>
+		<p class="sub_txt"></p>
+		<div class="sns">
+			<ul>
+				<li><a href="javascript:;" class="kakao2" onclick="window.shareGift();"><span><img src="img/join_kakao.jpg" alt="카카오"></span>카카오로 공유</a></li>
+				<li><a href="http://www.facebook.com/sharer/sharer.php?u=http://paycatch.co.kr/camp/roulette/" onclick="window.shareGift();window.open('_blank','sns','width=500,height=700');" target='sns'><span><img src="img/join_facebook.jpg" alt="네이버"></span>페이스북 공유</a></li>
+				<!--	<li><a href="https://share.naver.com/web/shareView.nhn?url=http://paycatch.co.kr/camp/roulette/&title=PayCharge" onclick="window.open('_blank','sns','width=500,height=700');" target='sns'><span><img src="img/join_naver.jpg" alt="네이버"></span>네이버로 공유</a></li> -->
+			</ul>
+		</div>
+		<p class="">
+			<iframe src="https://coupa.ng/b7imhR" width="100%" height="44" frameborder="0" scrolling="no" referrerpolicy="unsafe-url"></iframe>
+		</p>
+	</div>
+
+
+	<div id="modal-win" class="modal popup_winning">
+		<span class='hide'><a href="#modal-win" rel="modal:open" class="modal-win"></a></span>
+		<p class="main_txt"></p>
+		<p class="sub_txt">이벤트에 참여해주셔서 감사합니다.</p>
+		<p class="sub_imginfo"><img src="/camp/roulette/img/event_kv02_coupon2.png"></p>
+		<p class='win_detail'>고유코드 (<span class='code'></span>) 에 당첨 되셨습니다.</p>
+		<p class='win_detail'>전산 오류시 고유코드를 이용하여 당첨여부를 판별하고 있습니다.</p>
+		<div class="sns">
+		<form name="form_regist" action='/member/kakao/login.php'>
+			<ul class='login'>
+				<li><span>이름</span><p><input type='text' name='uname'/></p></li>
+				<li><span>전화번호</span><p><input type='number' name='pno1' maxlength="11" placeholder="‘_’ 제외하고 입력" /></p></li>
+				<li class='agree'><span><input type="checkbox" name="agree" /></span><p>개인정보수집에 동의합니다.</p> <a href="javascript:;" onclick="$('.policy').toggleClass('hidden');">[자세히]</a></li>
+				<li class='ok_btn'><a href="javascript:;" class="join">완료</a></li>
+			</ul>
+		</form>
+		</div>
+
+		<pre class='policy hidden' >
+☞ 개인정보 수집이용 동의 안내
+paycatch는 이벤트 진행을 위하여 아래와 같이 개인 정보를 수집, 이용합니다.
+처음 입력한 이름, 전화번호는 회원 고유키와 함께 다음 당첨시,
+직전에 입력했던 정보를 자동으로 불러 입력 됩니다.
+- 수집항목: 이름, 연락처, IP주소 및 주소
+- 수집/이용 목적 : 이벤트 참여 및 당첨 시 경품 배송 및 불법/부정 이용 방지
+- 이용/보유 기간 : 탈퇴및 회원 선택시 지체 없이 파기.
+- 이벤트 관련 문의
+E-mail: weespk@kakao.com
+
+※ 고객님께서는 개인정보 수집 및 이용 동의를 거부할 수 있습니다.
+   단 거부할 경우 이벤트 참여가 불가능 합니다.
+
+☞ 개인정보 취급 위탁 동의
+paycatch는 이벤트 진행을 위하여 아래와 같이 개인 정보를 수집 합니다.
+- 수집자: paycatch
+- 수집항목: 이름, 연락처, IP주소 및 주소
+- 수집/이용 목적 : 이벤트 진행, 당첨 확인 및 경품 발송, 메시지 발송및 마케팅 활용.
+- 이용/보유 기간: 탈퇴및 회원 선택시 지체 없이 파기.
+- 이벤트 관련 문의
+E-mail: weespk@kakao.com
+		</pre>
+	</div>
+
+	<div id="modal-lose" class="modal popup_fail">
+		<span class='hide'><a href="#modal-lose" rel="modal:open" class="modal-lose"></a></span>
+		<p class="main_txt"></p>
+		<p class="sub_txt">아쉽게 당첨되지 않았습니다.<br>하지만 당첨확율 높이는 방법으로 SNS공유 가 있다는걸 잊지마세요~</p>
+		<div class="sns">
+			<ul>
+				<li><a href="javascript:;" class="kakao2" onclick="window.shareGift();"><span><img src="img/join_kakao.jpg" alt="카카오"></span>카카오로 공유</a></li>
+				<li><a href="http://www.facebook.com/sharer/sharer.php?u=http://paycatch.co.kr/camp/roulette/" onclick="window.shareGift();window.open('_blank','sns','width=500,height=700');" target='sns'><span><img src="img/join_facebook.jpg" alt="네이버"></span>페이스북 공유</a></li>
+				<!--	<li><a href="https://share.naver.com/web/shareView.nhn?url=http://paycatch.co.kr/camp/roulette/&title=PayCharge" onclick="window.open('_blank','sns','width=500,height=700');" target='sns'><span><img src="img/join_naver.jpg" alt="네이버"></span>네이버로 공유</a></li> -->
+			</ul>
+		</div>
+		<p class="" style="text-align:center;">
+<!-- 			<a href="https://coupa.ng/b7IF9b" target="_blank" referrerpolicy="unsafe-url"><img src="https://static.coupangcdn.com/image/affiliate/banner/3721ee141a0b40f03e2616f695f0170d@2x.jpg" alt="스타벅스 카페라떼 200mlx20+친환경 아이스팩, 20개, 200ml" width="120" height="240"></a> -->
+			<a href="https://coupa.ng/b7MQre" class="coupang_ad" target="_blank" referrerpolicy="unsafe-url"><img src="https://static.coupangcdn.com/image/affiliate/banner/23f85fa047e0ace7ce7636b5fd246a22@2x.jpg" alt="스타벅스 대용량 카페 라떼, 270ml, 10개" width="120" height="240"></a>
+			<a href="https://coupa.ng/b7MRe3" class="coupang_ad" target="_blank" referrerpolicy="unsafe-url"><img src="https://static.coupangcdn.com/image/affiliate/banner/d4574d8a30c44ea6ddbc14033534bca2@2x.jpg" alt="스타벅스 콜드브루 블랙, 325ml, 12개" width="120" height="240"></a>
+		</p>
+
+<!-- 						<div id="swiper_my"> -->
+<!-- 							<div class="swiper-container"> -->
+<!-- 								<div class="swiper-wrapper"> -->
+<!-- 									<div class="swiper-slide"><span><a href="https://coupa.ng/b7IF9b" target="_blank" referrerpolicy="unsafe-url"><img src="https://static.coupangcdn.com/image/affiliate/banner/3721ee141a0b40f03e2616f695f0170d@2x.jpg" alt="스타벅스 카페라떼 200mlx20+친환경 아이스팩, 20개, 200ml" width="120" height="240"></a></span></div> -->
+<!-- 									<div class="swiper-slide"><span><a href="https://coupa.ng/b7IGvt" target="_blank" referrerpolicy="unsafe-url"><img src="https://static.coupangcdn.com/image/affiliate/banner/8154fb1a4cc172f01536758035020044@2x.jpg" alt="스타벅스 프라푸치노 병커피 카라멜향, 281ml, 16개" width="120" height="240"></a></span></div> -->
+<!-- 								</div> -->
+<!-- 							</div> -->
+<!-- 						</div> -->
+	</div>
+	<!-- //popup -->
+<script type="text/javascript">
+<!--
+	$(document).ready(function() {
+		E.ChargeChance({ chance_type:'getInfo'
+			, callback:function(req){
+				$(".office span").html(req.chance_info.chance_cnt);
+			}
+		});
+//		$('.modal-lose').modal({escapeClose: false, clickClose: false});
+		
+//		window.swiper_myEvt1 = new Swiper('#modal-lose .swiper-container', {
+//			slidesPerView : 1,
+//			spaceBetween: 0,
+//		});
+	});
+
+//변수
+	var gift, clickd=false;
+	var roulette = $(".roulette");
+	var rotationPos = new Array(30,90,150,210,270,330);
+
+// 함수
+	function iniGame(num) {
+		gift = num;
+		TweenLite.killTweensOf(roulette);
+		TweenLite.to(roulette, 0, {css:{rotation:rotationPos[gift]}});
+		TweenLite.from(roulette, 5, {css:{rotation:-3000}, onComplete:endGame, ease:Sine.easeOut});
+	}
+
+	function endGame(){
+		if ( gift == 0 || gift == 3 ) {
+			$('.modal-lose').modal({escapeClose: false, clickClose: false});
+		} else {
+			$('.modal-win').modal({escapeClose: false, clickClose: false});
+			$(".popup_winning .sub_imginfo").html(window.win_info.winimg_tag);
+		}
+		clickd= false;
+	}
+
+// 바인딩
+	$('.btn_roulette').on('click', function(e){
+		if (clickd)
+		{
+			alert("잠시만 기다려주세요.");
+		}
+		else{
+			E.RegisterChk({ loginType:'start_btn'
+				, beforeLogin: function(req){
+					E.AlertMsg('modal-alert', '', '로그인 후 이용 가능합니다.<br>오른쪽 상단에 카카오 로그인후 이용해주세요~' );
+				}
+				, callback: function(req){
+					window.member_info= req.info;
+					window.loginCallback(req);
+				}
+			});
+
+		}
+	});
+	
+	window.loginCallback= function(req){
+		if (E.loginType=='start_btn')
+		{
+			E.StartBtn({
+				end: function(){
+					alert("캠페인이 종료 되었습니다.");
+				}
+				, start: function(){
+
+					E.ChargeChance({ chance_type:'use'
+						, callback:function(req){
+							$(".office span").html(req.chance_info.chance_cnt);
+
+							if (req.result=='o')
+							{
+								clickd= true;
+								E.ChkWinner({
+									lose: function(req){
+										$(".office span").html(req.chance_info.chance_cnt);
+										iniGame(0);
+
+									}, gift: function(req){
+										window.win_info= req;
+										$(".office span").html(req.chance_info.chance_cnt);
+										$("#modal-win .win_detail .code").html(window.win_info.CHK +"_"+ window.win_info.win_time);
+										$("#modal-win input[name='uname']").val(req.chance_info.uname);
+										$("#modal-win input[name='pno1']").val(req.chance_info.pno);
+
+										iniGame(1);
+
+									}, gift2: function(req){
+										window.win_info= req;
+										$(".office span").html(req.chance_info.chance_cnt);
+										$("#modal-win .win_detail .code").html(window.win_info.CHK +"_"+ window.win_info.win_time);
+										$("#modal-win input[name='uname']").val(req.chance_info.uname);
+										$("#modal-win input[name='pno1']").val(req.chance_info.pno);
+
+										iniGame(2);
+
+									}, gift3: function(req){
+										window.win_info= req;
+										$(".office span").html(req.chance_info.chance_cnt);
+										$("#modal-win .win_detail .code").html(window.win_info.CHK +"_"+ window.win_info.win_time);
+										$("#modal-win input[name='uname']").val(req.chance_info.uname);
+										$("#modal-win input[name='pno1']").val(req.chance_info.pno);
+
+										iniGame(4);
+										
+									}, after:function(req){
+									}
+								});
+
+							}
+							else{
+								E.AlertMsg('modal-alert', '', '참여 가능기회가 모두 소진되었습니다.<br>매일 카톡 로그인후 10회의 기회가 주어집니다.<br>SNS공유로 룰렛 참여기회를 더 잡아보세요~' );
+							}
+						}
+					});
+				}
+			});
+		}
+	}
+	window.shareGift= function(){
+		setTimeout(function(){
+			E.ChargeChance({ chance_type:'gift'
+				, callback:function(req){
+					$(".office span").html(req.chance_info.chance_cnt);
+					if (req.res=='gift_today_already')
+					{
+						E.AlertMsg('modal-alert', '알림', '무분별한 SNS공유는 상대방과의 관계지속에 문제가 될수 있습니다.' );
+					}
+				}
+			});
+		},3000);
+	}
+	$(".coupang_ad").click(function(){
+		$.ajax({
+			type: 'POST', async: false,
+			url: '_exec.php',
+			data: { 'mode' : 'COUPANG_AD', 'url': $(this).prop('href') },
+			dataType:"json",
+			success: function(req) {
+				
+			}
+		});
+	});
+
+	$("#modal-win .join").click(function(){
+		E.Gift({user_type : '', f: document.form_regist
+			,succ: function(){
+				E.AlertMsg('modal-alert', '알림', '참여가 완료되었습니다.' );
+			}
+		});
+	});
+//-->
+</script>
+</body>

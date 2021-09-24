@@ -1,0 +1,137 @@
+select count(c.idx) from tbl_content c left join tbl_member m on c.userno=m.idx left join tbl_content_dom d on c.dom_idx=d.idx   where c.state != 5
+select c.*, m.userid, m.uname, d.title dom_title, d.event_list_url from tbl_content c left join tbl_member m on c.userno=m.idx left join tbl_content_dom d on c.dom_idx=d.idx   where c.state != 5 order by c.idx desc limit 0, 30
+select count(c.idx) from tbl_content_dom c  where c.state != 5
+select c.* from tbl_content_dom c  where c.state != 5 order by c.reg_date desc limit 0, 15
+select count(c.idx) from tbl_content c left join tbl_member m on c.userno=m.idx left join tbl_content_dom d on c.dom_idx=d.idx   where c.state != 5
+select c.*, m.userid, m.uname, d.title dom_title, d.event_list_url from tbl_content c left join tbl_member m on c.userno=m.idx left join tbl_content_dom d on c.dom_idx=d.idx   where c.state != 5 order by c.idx desc limit 0, 30
+select count(c.idx) from tbl_content c left join tbl_member m on c.userno=m.idx left join tbl_content_dom d on c.dom_idx=d.idx   where c.state != 5
+select c.*, m.userid, m.uname, d.title dom_title, d.event_list_url from tbl_content c left join tbl_member m on c.userno=m.idx left join tbl_content_dom d on c.dom_idx=d.idx   where c.state != 5 order by c.idx desc limit 0, 30
+select count(c.idx) from tbl_content c left join tbl_member m on c.userno=m.idx left join tbl_content_dom d on c.dom_idx=d.idx   where c.state != 5
+select c.*, m.userid, m.uname, d.title dom_title, d.event_list_url from tbl_content c left join tbl_member m on c.userno=m.idx left join tbl_content_dom d on c.dom_idx=d.idx   where c.state != 5 order by c.idx desc limit 0, 30
+select * from tbl_online  order by reg_date desc limit 0, 15
+select * from tbl_online  order by reg_date desc limit 0, 15
+select * from tbl_online  order by reg_date desc limit 0, 15
+select * from tbl_online  order by reg_date desc limit 0, 15
+select * from tbl_online  order by reg_date desc limit 0, 15
+select * from tbl_online  order by reg_date desc limit 0, 15
+select count(c.idx) from tbl_content c left join tbl_member m on c.userno=m.idx left join tbl_content_dom d on c.dom_idx=d.idx   where c.state != 5
+select c.*, m.userid, m.uname, d.title dom_title, d.event_list_url from tbl_content c left join tbl_member m on c.userno=m.idx left join tbl_content_dom d on c.dom_idx=d.idx   where c.state != 5 order by c.idx desc limit 0, 30
+select count(c.idx) from tbl_content_dom c  where c.state != 5
+select c.* from tbl_content_dom c  where c.state != 5 order by c.reg_date desc limit 0, 15
+select count(c.idx) from tbl_content_dom c  where c.state != 5
+select c.* from tbl_content_dom c  where c.state != 5 order by c.reg_date desc limit 0, 15
+select count(c.idx) from tbl_content c left join tbl_member m on c.userno=m.idx left join tbl_content_dom d on c.dom_idx=d.idx   where c.state != 5
+select c.*, m.userid, m.uname, d.title dom_title, d.event_list_url from tbl_content c left join tbl_member m on c.userno=m.idx left join tbl_content_dom d on c.dom_idx=d.idx   where c.state != 5 order by c.idx desc limit 0, 30
+select count(c.idx) from tbl_content c left join tbl_member m on c.userno=m.idx left join tbl_content_dom d on c.dom_idx=d.idx   where c.state != 5
+select c.*, m.userid, m.uname, d.title dom_title, d.event_list_url from tbl_content c left join tbl_member m on c.userno=m.idx left join tbl_content_dom d on c.dom_idx=d.idx   where c.state != 5 order by c.idx desc limit 0, 30
+select count(c.idx) from tbl_content c left join tbl_member m on c.userno=m.idx left join tbl_content_dom d on c.dom_idx=d.idx   where c.state != 5
+select c.*, m.userid, m.uname, d.title dom_title, d.event_list_url from tbl_content c left join tbl_member m on c.userno=m.idx left join tbl_content_dom d on c.dom_idx=d.idx   where c.state != 5 order by c.idx desc limit 0, 30
+select count(c.idx) from tbl_content c left join tbl_member m on c.userno=m.idx left join tbl_content_dom d on c.dom_idx=d.idx   where c.state != 5
+select c.*, m.userid, m.uname, d.title dom_title, d.event_list_url from tbl_content c left join tbl_member m on c.userno=m.idx left join tbl_content_dom d on c.dom_idx=d.idx   where c.state != 5 order by c.idx desc limit 0, 30
+select count(c.idx) from tbl_content c left join tbl_member m on c.userno=m.idx left join tbl_content_dom d on c.dom_idx=d.idx   where c.state != 5
+select c.*, m.userid, m.uname, d.title dom_title, d.event_list_url from tbl_content c left join tbl_member m on c.userno=m.idx left join tbl_content_dom d on c.dom_idx=d.idx   where c.state != 5 order by c.idx desc limit 0, 30
+select count(c.idx) from tbl_content c left join tbl_member m on c.userno=m.idx left join tbl_content_dom d on c.dom_idx=d.idx   where c.state != 5
+select c.*, m.userid, m.uname, d.title dom_title, d.event_list_url from tbl_content c left join tbl_member m on c.userno=m.idx left join tbl_content_dom d on c.dom_idx=d.idx   where c.state != 5 order by c.idx desc limit 0, 30
+select count(c.idx) from tbl_content c left join tbl_member m on c.userno=m.idx left join tbl_content_dom d on c.dom_idx=d.idx   where c.state != 5
+select c.*, m.userid, m.uname, d.title dom_title, d.event_list_url from tbl_content c left join tbl_member m on c.userno=m.idx left join tbl_content_dom d on c.dom_idx=d.idx   where c.state != 5 order by c.idx desc limit 0, 30
+select * from tbl_online  order by reg_date desc limit 0, 15
+select count(idx) from tbl_board where b_id='001' 
+select * from tbl_board where b_id='001'  order by notice desc, ref desc , re_step asc limit 0, 20
+select count(idx) from tbl_board where b_id='001' 
+select * from tbl_board where b_id='001'  order by notice desc, ref desc , re_step asc limit 0, 20
+select count(idx) from tbl_board where b_id='001' 
+select * from tbl_board where b_id='001'  order by notice desc, ref desc , re_step asc limit 0, 20
+select count(idx) from tbl_board where b_id='001' 
+select * from tbl_board where b_id='001'  order by notice desc, ref desc , re_step asc limit 0, 20
+select count(idx) from tbl_board where b_id='001' 
+select * from tbl_board where b_id='001'  order by notice desc, ref desc , re_step asc limit 0, 20
+select count(idx) from tbl_board where b_id='001' 
+select * from tbl_board where b_id='001'  order by notice desc, ref desc , re_step asc limit 0, 20
+select count(idx) from tbl_board where b_id='001' 
+select * from tbl_board where b_id='001'  order by notice desc, ref desc , re_step asc limit 0, 20
+select count(idx) from tbl_board where b_id='001' 
+select * from tbl_board where b_id='001'  order by notice desc, ref desc , re_step asc limit 0, 20
+select count(idx) from tbl_board where b_id='001' 
+select * from tbl_board where b_id='001'  order by notice desc, ref desc , re_step asc limit 0, 20
+select count(idx) from tbl_board where b_id='001' 
+select * from tbl_board where b_id='001'  order by notice desc, ref desc , re_step asc limit 0, 20
+select count(idx) from tbl_board where b_id='001' 
+select * from tbl_board where b_id='001'  order by notice desc, ref desc , re_step asc limit 0, 20
+select count(idx) from tbl_board where b_id='002' 
+select * from tbl_board where b_id='002'  order by notice desc, ref desc , re_step asc limit 0, 20
+select count(idx) from tbl_board where b_id='001' 
+select * from tbl_board where b_id='001'  order by notice desc, ref desc , re_step asc limit 0, 20
+select count(idx) from tbl_board where b_id='001' 
+select * from tbl_board where b_id='001'  order by notice desc, ref desc , re_step asc limit 0, 20
+select count(idx) from tbl_board where b_id='001' 
+select * from tbl_board where b_id='001'  order by notice desc, ref desc , re_step asc limit 0, 20
+select count(idx) from tbl_board where b_id='001' 
+select * from tbl_board where b_id='001'  order by notice desc, ref desc , re_step asc limit 0, 20
+select count(idx) from tbl_board where b_id='001' 
+select * from tbl_board where b_id='001'  order by notice desc, ref desc , re_step asc limit 0, 20
+select count(idx) from tbl_board where b_id='002' 
+select * from tbl_board where b_id='002'  order by notice desc, ref desc , re_step asc limit 0, 20
+select count(idx) from tbl_board where b_id='001' 
+select * from tbl_board where b_id='001'  order by notice desc, ref desc , re_step asc limit 0, 20
+select count(idx) from tbl_board where b_id='002' 
+select * from tbl_board where b_id='002'  order by notice desc, ref desc , re_step asc limit 0, 20
+select count(idx) from tbl_board where b_id='001' 
+select * from tbl_board where b_id='001'  order by notice desc, ref desc , re_step asc limit 0, 20
+select count(idx) from tbl_board where b_id='001' 
+select * from tbl_board where b_id='001'  order by notice desc, ref desc , re_step asc limit 0, 20
+select count(idx) from tbl_board where b_id='001' 
+select * from tbl_board where b_id='001'  order by notice desc, ref desc , re_step asc limit 0, 20
+select count(idx) from tbl_board where b_id='001' 
+select * from tbl_board where b_id='001'  order by notice desc, ref desc , re_step asc limit 0, 20
+select count(idx) from tbl_board where b_id='001' 
+select * from tbl_board where b_id='001'  order by notice desc, ref desc , re_step asc limit 0, 20
+select count(idx) from tbl_board where b_id='001' 
+select * from tbl_board where b_id='001'  order by notice desc, ref desc , re_step asc limit 0, 20
+select count(idx) from tbl_board where b_id='001' 
+select * from tbl_board where b_id='001'  order by notice desc, ref desc , re_step asc limit 0, 20
+select count(idx) from tbl_board where b_id='001' 
+select * from tbl_board where b_id='001'  order by notice desc, ref desc , re_step asc limit 0, 20
+select count(idx) from tbl_board where b_id='001' 
+select * from tbl_board where b_id='001'  order by notice desc, ref desc , re_step asc limit 0, 20
+select * from tbl_board_comment where b_idx='166' order by regdate desc
+select * from tbl_board_comment where b_idx='166' order by regdate desc
+select * from tbl_board_comment where b_idx='166' order by regdate desc
+select * from tbl_board_comment where b_idx='166' order by regdate desc
+select * from tbl_board_comment where b_idx='166' order by regdate desc
+select * from tbl_board_comment where b_idx='166' order by regdate desc
+select * from tbl_content_file where bidx='' and sortnum='1'
+select * from tbl_content_file where bidx='' and sortnum='2'
+insert into tbl_content (userno, gubun, descript, sdate, edate, title, gift_info, content, landing, tag, vod, url, state, reg_date, collect_date, reg_dates) values ('1', 'e', 'test', '2021-08-17', '2021-08-31', 'test', 'test', 'test', 'http://gest.co.kr/pocari/roulette.html', '', '', '', '9', '2021-08-17 10:54:35', '2021-08-17 10:54:35', '2021-08-17')
+insert into tbl_content (userno, gubun, descript, sdate, edate, title, gift_info, content, landing, tag, vod, url, state, reg_date, collect_date, reg_dates) values ('1', 'e', 'test', '2021-08-17', '2021-08-31', 'test', 'test', 'test', 'http://gest.co.kr/pocari/roulette.html', '', '', '', '9', '2021-08-17 10:54:52', '2021-08-17 10:54:52', '2021-08-17')
+insert into tbl_content (userno, gubun, descript, sdate, edate, title, gift_info, content, landing, tag, vod, url, state, reg_date, collect_date, reg_dates) values ('1', 'e', 'test', '2021-08-17', '2021-08-31', 'test', 'test', 'test', 'http://gest.co.kr/pocari/roulette.html', '', '', '', '9', '2021-08-17 10:56:04', '2021-08-17 10:56:04', '2021-08-17')
+SELECT COUNT(1) FROM tbl_board WHERE b_id='016' AND reg_dates=LEFT(NOW(),10) AND pno='' 
+insert into tbl_board(b_id, reg_date, reg_dates, ssn, name, pno, passwd, title, content, selectType, ip, ref, mobile)
+							values('016', now(), left(now(),10), 'jOWIcAhizNrQ21j', '', '', '', '', '', '', '221.150.126.75', '132', 'mob')
+SELECT COUNT(1) FROM tbl_board WHERE b_id='016' AND reg_dates=LEFT(NOW(),10)  
+insert into tbl_board(b_id, reg_date, reg_dates, ssn, name, pno, passwd, title, content, selectType, ip, ref, mobile)
+							values('016', now(), left(now(),10), 'jOWIcAhizNrQ21j', '', '', '', '', '', '', '221.150.126.75', '132', 'mob')
+SELECT COUNT(1) FROM tbl_board WHERE b_id='016' AND reg_dates=LEFT(NOW(),10)  
+insert into tbl_board(b_id, reg_date, reg_dates, ssn, name, pno, passwd, title, content, selectType, ip, ref, mobile)
+							values('016', now(), left(now(),10), 'jOWIcAhizNrQ21j', '', '', '', '', '', '', '221.150.126.75', '132', 'mob')
+SELECT COUNT(1) FROM tbl_board WHERE b_id='016' AND reg_dates=LEFT(NOW(),10)  
+insert into tbl_board(b_id, reg_date, reg_dates, ssn, name, pno, passwd, title, content, selectType, ip, ref, mobile)
+							values('016', now(), left(now(),10), 'jOWIcAhizNrQ21j', '', '', '', '', '', '', '221.150.126.75', '132', 'mob')
+insert into tbl_board(b_id, reg_date, reg_dates, ssn, name, pno, passwd, title, content, selectType, ip, ref, mobile)
+							values('016', now(), left(now(),10), 'jOWIcAhizNrQ21j', '', '', '', '', '', '', '221.150.126.75', '132', 'mob')
+insert into tbl_board(b_id, reg_date, reg_dates, ssn, name, pno, passwd, title, content, selectType, ip, ref, mobile)
+							values('016', now(), left(now(),10), 'jOWIcAhizNrQ21j', '', '', '', '', '', '', '221.150.126.75', '132', 'mob')
+insert into tbl_board(b_id, reg_date, reg_dates, ssn, name, passwd, title, content, selectType, ip, ref)
+							values('016', now(), left(now(),10), 'jOWIcAhizNrQ21j', '', '', '', '', '', '221.150.126.75', '132')
+insert into tbl_board(b_id, reg_date, reg_dates, ssn, name, pno, passwd, title, content, selectType, ip, ref, re_level, re_step, notice, mobile)
+							values('016', now(), left(now(),10), 'jOWIcAhizNrQ21j', '', '', '', 'ㅁㅁㅁㅁ', 'ㅁㅁㅁㅁ', '', '221.150.126.75', '134', '1', '-1', '1', '')
+select * from tbl_site_config
+select count(*) c from tbl_board a where b_id='016' 
+
+					select a.*
+						, a.name uname, 'N' is_logind, 'N' is_me
+					from tbl_board a
+					where b_id='016' 
+					and re_level=0
+					order by notice desc, ref desc, re_step desc, idx desc
+					limit 0, 3
+				
