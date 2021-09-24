@@ -1,3 +1,6 @@
+
+	var start= new Date().getTime();
+
 $(document).ready(function() {
 
 	mobile = false;
@@ -714,7 +717,6 @@ $(document).ready(function() {
 			}
 		},
 		load: function(clear){
-			var start= new Date().getTime();
 			var $list = $(".board_write_wrap .view_area")
 
 			$.ajax({
@@ -728,7 +730,7 @@ $(document).ready(function() {
 
 				},
 				success: function(req) {
-					console.log( new Date().getTime() - start, req );
+					console.log( 'load', new Date().getTime() - start, req );
 
 					if (clear=='clear')
 					{

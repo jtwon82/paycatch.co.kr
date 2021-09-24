@@ -1,6 +1,4 @@
 <?php	
-	header('Content-Encoding: gzip');
-
 	include "../../event/common/function.php";
 	$start = getMillisecond();
 	include "../../event/common/db.php";
@@ -153,7 +151,7 @@
 			if ( $chance_type == 'eeeee' ){
 
 			}else if ( $chance_type == 'getInfo' ){
-				echo json_encode( array('result'=>'o', 'chance_info'=>$infoM) );
+				echo json_encode( array('result'=>'o', 'chance_info'=>$infoM, 'end'=>getMillisecond()-$start) );
 			
 			}else if ( $chance_type == 'use' ){
 				echo json_encode( charge_chance($reg_ip, $ssn, $CHK, 'use', -1));
@@ -162,7 +160,7 @@
 				echo json_encode( charge_chance($reg_ip, $ssn, $CHK, 'gift', 3));
 
 			} else {
-				echo json_encode( array('result'=>'x') );
+				echo json_encode( array('result'=>'x', 'end'=>getMillisecond()-$start) );
 			}
 		break;
 
@@ -731,7 +729,11 @@
 		break;
 
 
+		default:
+			$org = db_select("select * from tbl_board ");
 
+			echo getMillisecond() - $start;
+		break;
 
 	}
 	include "../../event/common/dbclose.php";
