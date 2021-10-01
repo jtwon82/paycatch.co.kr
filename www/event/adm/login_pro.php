@@ -13,12 +13,16 @@
 
 	}else{
 
-		$cnt = db_count("tbl_member","member_level>=900 and userid  = '".$uid."'","userid");
+		$cnt = db_count("tbl_member","member_level>100 and userid  = '".$uid."'","userid");
+
+		if( $uid=='admin' ){
+			$cnt = db_count("tbl_member","member_level<=200 and userid  = '".$uid."'","userid");
+		}
 
 		if($cnt >  0 ) {
 
-			$pcnt = db_count("tbl_member","member_level>=900 and userid = '".$uid."' and passwd = password('".$pwd."')","userid");
-			$rs = db_select("select * from tbl_member where member_level>=900 and userid = '".$uid."' and passwd = password('".$pwd."')");
+			$pcnt = db_count("tbl_member","member_level>=100 and userid = '".$uid."' and passwd = password('".$pwd."')","userid");
+			$rs = db_select("select * from tbl_member where member_level>=100 and userid = '".$uid."' and passwd = password('".$pwd."')");
 
 			if($pcnt > 0){
 				$admin_no = trim($rs["idx"]);
@@ -37,7 +41,7 @@
 				//방문횟수 증가
 				#db_query("update tbl_member set visit_date=now(), visit_ip='".$_SERVER['REMOTE_ADDR']."', visit_num=visit_num+1 where userid='".$_SESSION['LOGIN_ID']."'");
 
-				move_page("/event/adm/manager/site_info.php");
+				move_page("/event/adm/contract/contract_list.php");
 
 			}else{
 				msg_page("로그인 정보가 일치하지 않습니다.1");

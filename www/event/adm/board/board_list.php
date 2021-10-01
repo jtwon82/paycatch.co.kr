@@ -15,8 +15,14 @@
 	$startnum=($page-1)*$list_num;
 
 	$count=db_result("select count(idx) from tbl_board where b_id='".$b_id."' $search_keyword");
-	$pRs=db_query("select * from tbl_board where b_id='".$b_id."' $search_keyword order by notice desc, ref desc, re_step desc, idx desc limit $startnum, $list_num");
+	$sql= "select * from tbl_board where b_id='".$b_id."' $search_keyword order by notice desc, ref desc, re_step desc, idx desc limit $startnum, $list_num";
+	$pRs=db_query($sql);
 	$totalpage  = ceil($count / $list_num);
+
+	if($bbs_skin){
+		include "./".$bbs_skin."/list.php";
+		exit;
+	}
 ?>
 <body>
 <div id="adm_wrap">
@@ -25,7 +31,7 @@
 		<tr>
 			<td id="left_area">
 				<!-- 좌측메뉴 -->
-				<? include "../inc/left.php"; ?>
+				<? include "../inc/left_{$_SESSION[LOGIN_ID]}.php"; ?>
 			</td>
 			<td id="content_area">
 				<h1><?=$bbs_name?></h1>
@@ -87,10 +93,8 @@
 								<th width="3%"><input type="checkbox" style="border:0" onClick="check_all(this,'idx[]')"></th>
 								<th width="5%">번호</th>
 								<th width="11%">작성일자</th>
-								<th width="8%">카테고리</th>
 								<th width="8%">작성자</th>
 								<th>제목</th>
-								<th width="8%">조회수</th>
 								<th width="11%">관리</th>
 							</tr>
 							</thead>
@@ -112,7 +116,7 @@
 								$regdate=$pList['reg_date'];
 
 								//공지글일 경우
-								$sortnum=($notice=='Y' ? "<img src=\"".$skin_img."/icon_notice.gif\" />" : $sortnum);
+								$sortnum=($notice=='Y' && $re_level==0 ? "Notice" : $sortnum);
 
 								//첨부파일
 								if($bbs_fileuse=="Y"){
@@ -149,10 +153,8 @@
 								<td><input name="idx[]" type="checkbox" value="<?=$pList['idx']?>" /></td>
 								<td><?=$sortnum?></td>
 								<td><?=$regdate?></td>
-								<td><?=$pList[b_code]?></td>
 								<td><?=$name?></td>
 								<td style="text-align:left;padding-left:10px;"><?=$subject?></td>
-								<td><?=$hit?></td>
 								<td>
 									<span class="button"><a href="board_write.php?b_id=<?=$b_id?>&b_code=<?=$b_code?>&idx=<?=$idx?>&mode=modify&page=<?=$page?>&search_key=<?=$search_key?>&search_val=<?=$search_val?>">수정</a></span>
 									<span class="button"><a href="board_pro.php?mode=del&b_id=<?=$b_id?>&b_code=<?=$b_code?>&idx=<?=$pList['idx']?>" onclick="return really()">삭제</a></span>

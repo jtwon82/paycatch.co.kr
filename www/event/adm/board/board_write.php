@@ -19,15 +19,20 @@
 	}
 
 	if(!$name) $name=$SITE_INFO['manager'];
+
+	if($bbs_skin){
+		include "./".$bbs_skin."/write.php";
+		exit;
+	}
 ?>
 
 <script type="text/javascript" src="../../../ckeditor/ckeditor.js"></script>
 <script type="text/javascript">
 $(function(){
-	CKEDITOR.replace( 'content', {
-		filebrowserUploadUrl: "http://<?=$_SERVER['HTTP_HOST']?>/ckeditor/samples/upload.php",
-		height:'350px'
-	});
+//	CKEDITOR.replace( 'content', {
+//		filebrowserUploadUrl: "http://<?=$_SERVER['HTTP_HOST']?>/ckeditor/samples/upload.php",
+//		height:'350px'
+//	});
 });
 </script>
 
@@ -38,7 +43,7 @@ $(function(){
 		<tr>
 			<td id="left_area">
 				<!-- 좌측메뉴 -->
-				<? include "../inc/left.php"; ?>
+				<? include "../inc/left_{$_SESSION[LOGIN_ID]}.php"; ?>
 			</td>
 			<td id="content_area">
 				<h1><?=$bbs_name?></h1>
@@ -83,7 +88,7 @@ $(function(){
 						?>
 							<tr>
 								<th>제목</th>
-								<td><input type="text" name="title" id="title" class="dInput req" title="제목" value="<?=$title?>" style="width:90%;" /></td>
+								<td><input type="text" name="title" id="title" class="dInput " title="제목" value="<?=$title?>" style="width:90%;" /></td>
 							</tr>
 						<?
 							if($bbs_type=="1"){
@@ -113,14 +118,6 @@ $(function(){
 							<tr>
 								<th>이름</th>
 								<td><input type="text" name="name" id="name" class="dInput req" title="이름" value="<?=$name?>" /></td>
-							</tr>
-							<tr>
-								<th>링크</th>
-								<td><input type="text" name="link" id="link" class="dInput " title="link" value="<?=$pList[link]?>" /></td>
-							</tr>
-							<tr>
-								<th>태그</th>
-								<td><input type="text" name="etc9" id="etc9" class="dInput " title="etc9" value="<?=$pList[etc9]?>" /></td>
 							</tr>
 							<tr>
 								<th>내용</th>

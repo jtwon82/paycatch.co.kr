@@ -256,8 +256,7 @@
 					db_insert("tbl_member", $field);
 					$idx		=mysql_insert_id();
 
-					#charge_chance($reg_ip, $ssn, $ssn, 'regist', 10);
-					charge_chance($reg_ip, $ssn, $ssn, 'login', 10);
+					charge_chance($reg_ip, $ssn, $ssn, 'login', 20);
 
 					setcookie('SSN', $ssn, time()+(60*60*24*365), '/' );
 					/* 세션처리 */
@@ -292,8 +291,7 @@
 			db_insert("tbl_member", $field);
 			$idx		=mysql_insert_id();
 			
-			#charge_chance($reg_ip, $ssn, $ssn, 'regist', 10);
-			charge_chance($reg_ip, $ssn, $ssn, 'login', 10);
+			charge_chance($reg_ip, $ssn, $ssn, 'login');
 			
 			setcookie('SSN', $ssn, time()+(60*60*24*365), '/' );
 			/* 세션처리 */
@@ -328,7 +326,7 @@
 
 			if( $mInfo[sns_regist] ){
 				$ssn = $mInfo[ssn];
-				charge_chance($reg_ip, $ssn, $ssn, 'login', 10);
+				charge_chance($reg_ip, $ssn, $ssn, 'login');
 
 				setcookie('SSN', $ssn, time()+(60*60*24*365), '/' );
 				/* 세션처리 */
@@ -353,7 +351,7 @@
 				if( $mInfo && $mInfo[passwd]==$passwd ){
 
 					$ssn = $mInfo[ssn];
-					charge_chance($reg_ip, $ssn, $ssn, 'login', 10);
+					charge_chance($reg_ip, $ssn, $ssn, 'login');
 
 					setcookie('SSN', $ssn, time()+(60*60*24*365), '/' );
 					/* 세션처리 */

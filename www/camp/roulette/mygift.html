@@ -1,0 +1,178 @@
+<?
+	session_start();
+	include "../../event/common/function.php";
+	include "../../event/common/db.php";
+	include "../../event/common/counter.php";
+
+?>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta http-equiv="Cache-Control" content="no-cache">
+    <meta name="format-detection" content="telephone=no, address=no, email=no">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="http://www.paycatch.co.kr/camp/roulette/">
+    <meta property="og:title" content="paycatch">
+    <meta property="og:description" content="paycatch">
+    <meta property="og:image" content="http://arteriver.cdn3.cafe24.com/camp/roulette/img/thumb.jpg">
+    <meta name="twitter:image" content="http://arteriver.cdn3.cafe24.com/camp/roulette/img/thumb.jpg">
+    <title>paycatch</title>
+	<link rel="stylesheet" href="/css/font-awesome.css">
+<!--     <link rel="stylesheet" href="css/font.css?st=<?=rand()?>"> -->
+    <link rel="stylesheet" href="css/reset.css?st=<?=rand()?>">
+	<link rel="stylesheet" href="/css/font-awesome.css">
+	<link href="css/swiper.min.css" rel="stylesheet" type="text/css"/>
+
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.3.3/gsap.min.js"></script>
+	<script type="text/javascript" src="/js/jquery-library.js?st=<?=rand()?>"></script>
+	<script type="text/javascript" src="js/swiper.min.js"></script>
+	<script type="text/javascript" src="js/common.js?st=<?=rand()?>"></script>
+	<script type="text/javascript" src="js/event.lib.js?st=<?=rand()?>"></script>
+
+	<!-- jQuery Modal -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
+    <link rel="stylesheet" href="css/common.css?st=<?=rand()?>">
+
+	<script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
+	<script src="https://ads-partners.coupang.com/g.js"></script>
+
+<style>
+.my_gift { position: absolute;top: 38%;width: 100%;text-align: center;	}
+.my_gift span { top: 28%;width: 100%;font-size: 26px;font-weight: bold; }
+.my_gift .lose { font-size: 25px;margin: 39px 0;font-weight: bold; }
+
+#swiper_my{width:82%; height:18%; top:44%; left:9%; position: absolute; z-index: 1;}
+.swiper-container{width:100%; height:100%; top:0%; left:0%; position: absolute;text-align: center;}
+.swiper-button-prev, .swiper-button-next{background-image: none; width:auto; height:auto; outline: none; top: 45%;}
+.swiper-button-prev{left:-9%; width:auto; height:auto; background-image: none;}
+.swiper-button-next{right:-9%; width:auto; height:auto;  background-image: none;}
+
+@media all and (max-width:768px) {
+	.my_gift {    top: 29%; }
+	.my_gift span {	font-size: 20px; }
+
+	#swiper_my{ top:34%; height:31%;}
+}
+</style>
+</head>
+<body>
+
+
+    <div style="background-color: #ff517e24;">
+        <div id="wrap" class="wrapper">
+            <div class="title_wrap ">
+		<?
+			if($_SESSION[USER][LOGIN_NAME]!=""){
+		?>
+                <div class="btn_allmenu menu_btn"><a href="#"><i class="fa fa-bars fa-2x" ></i></a></div>
+				<a href="javascript:;" class="btn-home kakao" onclick="window.shareGift();"><i class="fa fa-comments fa-2x" ></i></a>
+		<?
+			} else {
+		?>
+				<a href="/member/kakao/login.php" class="btn-home"><i class="fa fa-comments fa-2x" ></i></a>
+		<?
+			}
+		?>
+                <div class="page_title ft-color">내당첨내역</div>
+            </div>
+
+			<!-- //nav -->
+			<? include "./inc.nav.html"; ?>
+
+            <div class="event_mygift">
+                <img src="http://arteriver.cdn3.cafe24.com/camp/roulette/img/event_kv03.png" alt="">
+				<div class="my_gift">
+					<span class='name'><em></em> 님의 당첨 경품입니다.</span>
+				</div>
+	        </div>
+
+			<div id="swiper_my" class='my_gift'>
+				<div class="swiper-container">
+					<div class="swiper-wrapper">
+					</div>
+				</div>
+				<div class="swiper-button-next"><img src="http://arteriver.cdn3.cafe24.com/camp/roulette/img/bu_paging_r.png"></div>
+				<div class="swiper-button-prev"><img src="http://arteriver.cdn3.cafe24.com/camp/roulette/img/bu_paging_l.png"></div>
+			</div>
+
+			<div class="event_roulette_coupangad" >
+				<iframe src="https://ads-partners.coupang.com/widgets.html?id=373753&template=carousel&trackingCode=AF0843132&subId=&width=700&height=50" width="350" height="100" frameborder="0" scrolling="no" referrerpolicy="unsafe-url"></iframe>
+			</div>
+			<div class="event_roulette_coupangad" style="">
+				<p>"이 포스팅은 쿠팡 파트너스 활동의 일환으로, 이에 따른 일정액의 수수료를 제공받습니다."</p>
+			</div>
+    </div>
+
+
+	<!-- popup_wrap -->
+		<? include "./inc.modal.html"; ?>
+
+<script type="text/javascript">
+<!--
+	$(document).ready(function() {
+		E.ChargeChance({ chance_type:'getInfo'
+			, callback:function(req){
+				if(req.chance_info){
+					$(".office span").html(req.chance_info.chance_cnt);
+				}
+			}
+		});
+		
+		$.ajax({
+			type: 'POST',
+			url: '_exec.php',
+			data: { 'mode' : 'MY_GIFT' },
+			dataType:"json",
+			success: function(req) {
+				var html= '<div class="swiper-slide "><img src="http://arteriver.cdn3.cafe24.com/camp/roulette/img/event_kv02_coupon{:no}.png" alt=""><span style="position: absolute; left: 0;top: 80%; ">{:reg_dates}</span></div>';
+
+				$(req.list).each(function(id){
+					var t= html;
+					if (this.win_type=='gift'){
+						t= t.replace("{:no}", "");
+						t= t.replace("{:reg_dates}", this.reg_dates);
+					}
+					if (this.win_type=='gift2'){
+						t= t.replace("{:no}", "2");
+						t= t.replace("{:reg_dates}", this.reg_dates);
+					}
+					if (this.win_type=='gift3'){
+						t= t.replace("{:no}", "3");
+						t= t.replace("{:reg_dates}", this.reg_dates);
+					}
+					if (this.win_type=='gift4'){
+						t= t.replace("{:no}", "4");
+						t= t.replace("{:reg_dates}", this.reg_dates);
+					}
+					if (this.win_type=='gift5'){
+						t= t.replace("{:no}", "5");
+						t= t.replace("{:reg_dates}", this.reg_dates);
+					}
+					$(".my_gift .swiper-wrapper").append(t);
+				});
+				if($(".my_gift .swiper-wrapper div").length<1){
+					$(".my_gift .swiper-wrapper").append('<div class="swiper-slide lose">아직 당첨내역이 없습니다.</div>'); //미당첨
+				}
+
+				$(".my_gift .name em").html(req.uname);
+				window.swiper_myEvt1 = new Swiper('#swiper_my .swiper-container', {
+					slidesPerView : 1,
+					spaceBetween: 0,
+					navigation : {
+						nextEl : '#swiper_my .swiper-button-next',
+						prevEl : '#swiper_my .swiper-button-prev',
+					},
+				});
+			}
+		});
+
+
+	
+	});
+//-->
+</script>
+</body>

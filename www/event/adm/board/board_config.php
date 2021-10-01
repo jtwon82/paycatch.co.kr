@@ -41,6 +41,6 @@
 	//지정된 폴더, 파일 불러오기
 	$bbs_dir	=$_SERVER[DOCUMENT_ROOT] ."/data/bbs/".$b_id;  //게시판 저장경로
 	$skin_dir	=$_SERVER[DOCUMENT_ROOT] ."/board";  //게시판 스킨 폴더
-	$skin_img	="../images";  //게시판 스킨 이미지 폴더
+	$skin_img	="/images";  //게시판 스킨 이미지 폴더
 	$bbs_page	=$_SERVER['PHP_SELF'];
 ?>

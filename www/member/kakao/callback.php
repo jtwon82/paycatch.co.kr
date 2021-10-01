@@ -6,7 +6,7 @@
 
 	$client_id = "$kakao_clientid"; // 위에서 발급받은 Client ID 입력
 	$client_secret = "$kakao_secret";
-	$redirectURI = urlencode("http://paycatch.co.kr/member/kakao/callback.php"); //자신의 Callback URL 입력
+	$redirectURI = urlencode("http://www.paycatch.co.kr/member/kakao/callback.php"); //자신의 Callback URL 입력
 	$state = "RAMDOM_STATE";
 	$apiURL = "https://kauth.kakao.com/oauth/authorize?client_id=".$client_id."&redirect_uri=".$redirectURI."&response_type=code";
 
@@ -22,7 +22,7 @@
 		$params[code] = $code;
 
 		$response = httpPost2($apiURL, $params);
-		$res = json_decode($response, true);
+		$res= json_decode($response, true);
 
 		$access_token = $res[access_token];
 		$refresh_token = $res[refresh_token];
@@ -30,17 +30,15 @@
 		$headers[] = "Authorization: Bearer ". $access_token;
 		$apiURL = "https://kapi.kakao.com/v2/user/me";
 		$response = httpPost2($apiURL, '', $headers);
-//print_r($response);exit;
 
 		$uInfo = json_decode($response, true);
-//		$uInfo = $res[response];
-//print_r($uInfo);exit;
+		//	$uInfo = $res[response];
 
 		$uInfo[id]		=$uInfo[id];
 		$uInfo[uname]	=$uInfo[properties][nickname];
 		$uInfo[profile_image]	=$uInfo[properties][profile_image];
-//		$uInfo[age]		=$res[properties][custom_field1];
-//		$uInfo[gender]	=$res[properties][custom_field2];
+		//	$uInfo[age]		=$res[properties][custom_field1];
+		//	$uInfo[gender]	=$res[properties][custom_field2];
 
 		// 첫번째 로그인이면 회원가입으로
 		if(db_count("tbl_member", "userid='{$uInfo[id]}' and sns_regist='ka'", "idx")<1){

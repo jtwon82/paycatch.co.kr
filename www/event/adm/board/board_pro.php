@@ -10,22 +10,19 @@
 		$field['b_code']	=anti_injection($_POST['b_code']);
 		$field['userno']	=$_SESSION['LOGIN_NO'];
 		$field['name']		=anti_injection($_POST['name']);
-		$field['title']		=anti_injection($_POST['title']);
+		$field['title']		=addslashes(cutstr($_POST['title'],100));
+		$field['content']	=addslashes($_POST['content']);
 		$field['link']		=anti_injection($_POST['link']);
-		$field['content']	=$_POST['content'];
 		$field['notice']	=($_POST['notice'] ? $_POST['notice'] : "N");
 		$field['secret']	=($_POST['secret'] ? $_POST['secret'] : "N");
 		$field['ip']		=$_SERVER["REMOTE_ADDR"];
 		$field['reg_date']	=date('Y-m-d H:i:s');
-		$field['etc1']		=anti_injection($_POST['etc1']);
-		$field['etc2']		=anti_injection($_POST['etc2']);
-		$field['etc3']		=anti_injection($_POST['etc3']);
-		$field['etc4']		=anti_injection($_POST['etc4']);
-		$field['etc5']		=anti_injection($_POST['etc5']);
-		$field['etc6']		=anti_injection($_POST['etc6']);
-		$field['etc7']		=anti_injection($_POST['etc7']);
-		$field['etc8']		=anti_injection($_POST['etc8']);
-		$field['etc9']		=anti_injection($_POST['etc9']);
+		$field['reg_dates']	=date('Y-m-d');
+
+		$field['from_name']		=anti_injection($_POST['from_name']);
+		$field['to_name']		=anti_injection($_POST['to_name']);
+		$field['letterType']		=anti_injection($_POST['letterType']);
+		$field['pno']		=anti_injection($_POST['pno']);
 
 		//글번호 생성
 		$rList = db_select("select ref from tbl_board order by ref desc");
@@ -64,26 +61,32 @@
 
 		//원글 정보 불러오기
 		$idx = anti_injection($_POST['idx']);
-		$org = db_select("select ref, re_level, re_step, passwd from tbl_board where idx='".$_POST['idx']."'");
+		$org = db_select("select ref, re_level, re_step, passwd, notice from tbl_board where idx='".$_POST['idx']."'");
 
 		//댓글 순서 한 칸씩 밀기
-		db_query("update tbl_board set re_step=re_step+1 where ref='".$org['ref']."' and re_step>'".$org['re_level']."'");
+		db_query("update tbl_board set re_step=re_step-1 where ref='".$org['ref']."' and re_step>'".$org['re_level']."'");
 
 		//글저장
 		$field['b_id']=anti_injection($b_id);
 		$field['b_code']=anti_injection($_POST['b_code']);
 		$field['userno']=$_SESSION['LOGIN_NO'];
 		$field['name']=anti_injection($_POST['name']);
-		$field['title']=anti_injection($_POST['title']);
-		$field['content']=$_POST['content'];
+		$field['title']		=addslashes(cutstr($_POST['title'],100));
+		$field['content']	=addslashes($_POST['content']);
 		$field['passwd']=$org['passwd'];
-		$field['notice']=($_POST['notice'] ? $_POST['notice'] : "N");
+		$field['notice']=$org['notice'];
 		$field['secret']=($_POST['secret'] ? $_POST['secret'] : "N");
 		$field['ip']=$_SERVER["REMOTE_ADDR"];
-		$field['reg_date']=time();
+		$field['reg_date']=date('Y-m-d H:i:s');
+		$field['reg_dates']	=date('Y-m-d');
 		$field['ref'] = $org['ref'];
 		$field['re_level'] = $org['re_level'] + 1;
-		$field['re_step'] = $org['re_step'] + 1;
+		$field['re_step'] = $org['re_step'] - 1;
+
+		$field['from_name']		=anti_injection($_POST['from_name']);
+		$field['to_name']		=anti_injection($_POST['to_name']);
+		$field['letterType']		=anti_injection($_POST['letterType']);
+		$field['pno']		=anti_injection($_POST['pno']);
 
 		db_insert("tbl_board",$field);
 
@@ -116,20 +119,15 @@
 
 		$field['b_code']	=anti_injection($_POST['b_code']);
 		$field['name']		=anti_injection($_POST['name']);
-		$field['title']		=anti_injection($_POST['title']);
-		$field['content']	=anti_injection($_POST['content']);
+		$field['title']		=addslashes(cutstr($_POST['title'],100));
+		$field['content']	=addslashes($_POST['content']);
 		$field['notice']	=($_POST['notice'] ? $_POST['notice'] : "N");
 		$field['secret']	=anti_injection($_POST['secret']);
-		$field['link']		=anti_injection($_POST['link']);
-		$field['etc1']		=anti_injection($_POST['etc1']);
-		$field['etc2']		=anti_injection($_POST['etc2']);
-		$field['etc3']		=anti_injection($_POST['etc3']);
-		$field['etc4']		=anti_injection($_POST['etc4']);
-		$field['etc5']		=anti_injection($_POST['etc5']);
-		$field['etc6']		=anti_injection($_POST['etc6']);
-		$field['etc7']		=anti_injection($_POST['etc7']);
-		$field['etc8']		=anti_injection($_POST['etc8']);
-		$field['etc9']		=anti_injection($_POST['etc9']);
+
+		$field['from_name']		=anti_injection($_POST['from_name']);
+		$field['to_name']		=anti_injection($_POST['to_name']);
+		$field['letterType']		=anti_injection($_POST['letterType']);
+		$field['pno']		=anti_injection($_POST['pno']);
 
 		db_update("tbl_board", $field, "idx='".$_POST['idx']."'");
 

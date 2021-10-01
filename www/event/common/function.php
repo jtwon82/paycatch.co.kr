@@ -102,7 +102,7 @@
 		if ($ssn==''){
 			return '';
 		}
-		$chance_info = info_user_chance($ssn, $CHK);
+		$chance_info = info_user_chance($ssn);
 
 		// 찬스를 디비에서 가져와서 쓰자. 
 //		$current_result= db_result("select current from tbl_chance_current where chance_type='$chance_type'");
@@ -112,7 +112,7 @@
 		
 		}else if ( $chance_type == 'login' ){
 			if ( $chance_info[login_today] < 1 ){
-				insert_user_chance2($reg_ip, $ssn, $CHK, $chance_type, $chance_cnt);
+				insert_user_chance2($reg_ip, $ssn, $CHK, $chance_type, 10);
 
 				$chance_info = info_user_chance($ssn);
 
@@ -123,16 +123,16 @@
 			}
 
 		}else if ( $chance_type == 'gift' ){
-			if ( $chance_info[gift_today] <= 9 ) {
+			#if ( $chance_info[gift_today] <= 9 ) {
 				insert_user_chance2($reg_ip, $ssn, $CHK, $chance_type, $chance_cnt);
 
 				$chance_info = info_user_chance($ssn);
 
 				return ( array('result'=>'o', 'chance_info'=>$chance_info) );
-			}
-			else{
-				return ( array('result'=>'x', 'res'=>'gift_today_already', 'chance_info'=>$chance_info) );
-			}
+			#}
+			#else{
+			#	return ( array('result'=>'x', 'res'=>'gift_today_already', 'chance_info'=>$chance_info) );
+			#}
 
 		}else if ( $chance_type == 'use' ){
 			if ( $chance_info[chance_cnt] >= ($chance_cnt*-1) ){
@@ -147,7 +147,7 @@
 			}
 
 		}else if ( $chance_type == 'sns' ){
-			if ( $chance_info[sns_today] < 200 ) {
+			if ( $chance_info[sns_today] < 10 ) {
 				insert_user_chance2($reg_ip, $ssn, $CHK, $chance_type, $chance_cnt);
 
 				$chance_info = info_user_chance($ssn);
@@ -266,21 +266,23 @@
 				, IFNULL(SUM(use_chance),0)use_chance
 				, IFNULL(SUM(login_today),0)login_today
 				, IFNULL(SUM(gift_today),0)gift_today
+				, IFNULL(SUM(sns_today),0)sns_today
 				, IFNULL(SUM(use_today),0)use_today
-				, IFNULL(SUM(login_today) + SUM(gift_today) + SUM(use_today) ,0)chance_cnt
+				, IFNULL(SUM(login_today) + SUM(gift_today) + SUM(sns_today) + SUM(use_today) ,0)chance_cnt
 				, uname, pno
 			FROM (
 				SELECT b.ssn
-				, IFNULL(SUM(CASE WHEN chance_type in('login','gift') THEN current END),0)total_chance
+				, IFNULL(SUM(CASE WHEN chance_type in('login','gift','sns') THEN current END),0)total_chance
 				, IFNULL(SUM(CASE WHEN chance_type='use' THEN current END),0) use_chance
 				, IFNULL(SUM(CASE WHEN a.reg_dates=b.reg_dates AND chance_type='login' THEN current END),0)login_today
 				, IFNULL(SUM(CASE WHEN a.reg_dates=b.reg_dates AND chance_type='gift' THEN current END),0)gift_today
+				, IFNULL(SUM(CASE WHEN a.reg_dates=b.reg_dates AND chance_type='sns' THEN current END),0)sns_today
 				, IFNULL(SUM(CASE WHEN a.reg_dates=b.reg_dates AND chance_type='use' THEN current END),0)use_today
 				FROM tbl_chance a RIGHT JOIN (SELECT LEFT(NOW(),10)reg_dates, '$ssn' ssn) b ON a.ssn=b.ssn
 			) a, tbl_member m
 			WHERE a.ssn=m.ssn
 		";
-		$rs = db_select($sql);
+		$rs = db_select_assoc($sql);
 		return $rs;
 	}
 	function insert_user_chance2($reg_ip, $ssn, $chk, $chance_type, $chance_cnt=0){
@@ -513,7 +515,7 @@
 
 	//DB 접속
 	function db_connect($db_host, $db_user, $db_pass, $db_name){
-		$result = mysql_connect($db_host, $db_user, $db_pass) or die(mysql_error());
+		$result = @mysql_connect($db_host, $db_user, $db_pass) or die(mysql_error());
 		mysql_select_db($db_name) or die(mysql_error());
 		mysql_query("set names utf8");
 		return $result;

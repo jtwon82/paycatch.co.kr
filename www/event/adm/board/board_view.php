@@ -10,6 +10,11 @@ if($_GET['idx']){
 	$pList=db_select("select * from tbl_board where idx='".$_GET['idx']."'");
 	$content=$pList['content'];
 }
+
+	if($bbs_skin){
+		include "./".$bbs_skin."/view.php";
+		exit;
+	}
 ?>
 <script type="text/javascript">
 function validForm(editor) {
@@ -43,7 +48,7 @@ function validForm(editor) {
 		<tr>
 			<td id="left_area">
 				<!-- 좌측메뉴 -->
-				<? include "../inc/left.php"; ?>
+				<? include "../inc/left_{$_SESSION[LOGIN_ID]}.php"; ?>
 			</td>
 			<td id="content_area">
 				<h1><?=$bbs_name?></h1>
@@ -77,33 +82,6 @@ function validForm(editor) {
 								<th>작성일</th>
 								<td><?=$pList['reg_date']?></td>
 							</tr>
-							<tr>
-								<th>조회수</th>
-								<td><?=$pList['hit']?></td>
-							</tr>
-							<tr>
-								<th>링크</th>
-								<td >
-									<a href="<?=$pList[link]?>" target="pop" onclick="window.open('','pop','width=700,height=800');"><?=$pList[link]?></a>
-								</td>
-							</tr>
-							<tr>
-								<th>테그</th>
-								<td >
-									<a href="<?=$pList[etc9]?>"><?=$pList[etc9]?></a>
-								</td>
-							</tr>
-						<?
-							$fileRs=db_query("select * from tbl_board_file where b_idx='".$_GET['idx']."' order by sortnum");
-							while($fileList=db_fetch($fileRs)){
-						?>
-							<tr>
-								<th>첨부파일</th>
-								<td class="file_down"><a href="#" onclick="FileDown('bbs/<?=$b_id?>','<?=$fileList['filename']?>','<?=$fileList['orgname']?>');return false;"><?=$fileList['orgname']?></a> (<?=get_filesize($fileList['filesize'])?>)</td>
-							</tr>
-						<?
-							}
-						?>
 							<tr>
 								<th>내용</th>
 								<td style="height:300px;vertical-align:top;">

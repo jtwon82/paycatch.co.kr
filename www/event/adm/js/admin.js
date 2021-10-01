@@ -1,3 +1,25 @@
+
+	function updateData(url,mode){
+		$(".dimmed").show();
+		var sdate = $(".sdate").val();
+		var edate = $(".edate").val();
+
+			$.ajax({
+				type: 'POST',
+				url: url,
+				data: {
+					'mode' : mode,
+					'sdate' : sdate,
+					'edate' : edate,
+				},
+				dataType:"json",
+				success: function(req) {
+					window.location.reload();
+				}
+			}); 
+		
+	}
+
 //기본 상태 변경
 function state_set(table, idx, type, val){
 	$.post("../inc/state_pro.php",{table:table, mode:"change", idx:idx, type:type, val:val}, function(data) {

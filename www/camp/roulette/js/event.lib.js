@@ -21,18 +21,18 @@ $(document).ready(function() {
 			objectType : 'feed',
 			content : {
 				title : 'PayCatch if you can!',
-				description : 'NPay를 잡아라! 룰렛 이벤트 매일 10번의 기회가 주어집니다.',
-				imageUrl : 'http://paycatch.co.kr/camp/roulette/img/thumb.jpg',
+				description : 'NPay를 잡아라! 매일 주어지는 룰렛 이벤트 참여 기회 이번엔 내가 가져간다!',
+				imageUrl : 'http://www.paycatch.co.kr/camp/roulette/img/thumb.png',
 				link : {
-					mobileWebUrl : 'http://paycatch.co.kr/camp/roulette/',
-					webUrl : 'http://paycatch.co.kr/camp/roulette/'
+					mobileWebUrl : 'http://www.paycatch.co.kr/gate.php?ssn='+ssn,
+					webUrl : 'http://www.paycatch.co.kr/gate.php?ssn='+ssn
 				}
 			},
 			buttons : [{
 				title : '이벤트 참여하기',
 				link : {
-					mobileWebUrl : 'http://paycatch.co.kr/camp/roulette/',
-					webUrl : 'http://paycatch.co.kr/camp/roulette/'
+					mobileWebUrl : 'http://www.paycatch.co.kr/gate.php?ssn='+ssn,
+					webUrl : 'http://www.paycatch.co.kr/gate.php?ssn='+ssn
 				}
 			}],
 			success:function( req ){
@@ -44,18 +44,41 @@ $(document).ready(function() {
 			objectType : 'feed',
 			content : {
 				title : 'PayCatch if you can!',
-				description : 'NPay를 잡아라! 룰렛 이벤트 매일 10번의 기회가 주어집니다.',
-				imageUrl : 'http://paycatch.co.kr/camp/roulette/img/thumb.jpg',
+				description : 'NPay를 잡아라! 매일 주어지는 룰렛 이벤트 참여 기회 이번엔 내가 가져간다!',
+				imageUrl : 'http://www.paycatch.co.kr/camp/roulette/img/thumb.jpg',
 				link : {
-					mobileWebUrl : 'http://paycatch.co.kr/camp/roulette/',
-					webUrl : 'http://paycatch.co.kr/camp/roulette/'
+					mobileWebUrl : 'http://www.paycatch.co.kr/gate.php?ssn='+ssn,
+					webUrl : 'http://www.paycatch.co.kr/gate.php?ssn='+ssn
 				}
 			},
 			buttons : [{
 				title : '이벤트 참여하기',
 				link : {
-					mobileWebUrl : 'http://paycatch.co.kr/camp/roulette/',
-					webUrl : 'http://paycatch.co.kr/camp/roulette/'
+					mobileWebUrl : 'http://www.paycatch.co.kr/gate.php?ssn='+ssn,
+					webUrl : 'http://www.paycatch.co.kr/gate.php?ssn='+ssn
+				}
+			}],
+			success:function( req ){
+				console.log( req );
+			}
+		});
+		Kakao.Link.createDefaultButton({
+			container : '.kakao3',
+			objectType : 'feed',
+			content : {
+				title : 'PayCatch if you can!',
+				description : 'NPay를 잡아라! 매일 주어지는 룰렛 이벤트 참여 기회 이번엔 내가 가져간다!',
+				imageUrl : 'http://www.paycatch.co.kr/camp/roulette/img/thumb.jpg',
+				link : {
+					mobileWebUrl : 'http://www.paycatch.co.kr/gate.php?ssn='+ssn,
+					webUrl : 'http://www.paycatch.co.kr/gate.php?ssn='+ssn
+				}
+			},
+			buttons : [{
+				title : '이벤트 참여하기',
+				link : {
+					mobileWebUrl : 'http://www.paycatch.co.kr/gate.php?ssn='+ssn,
+					webUrl : 'http://www.paycatch.co.kr/gate.php?ssn='+ssn
 				}
 			}],
 			success:function( req ){
@@ -97,7 +120,7 @@ $(document).ready(function() {
 			}
 
 			$.ajax({
-				type: 'POST', async: false,
+				type: 'POST',// async: false,
 				url: '_exec.php',
 				data: { 'mode' : 'REGISTER_CHK' },
 				dataType:"json",
@@ -139,7 +162,7 @@ $(document).ready(function() {
 			var fd = new FormData(f);
 			fd.append('mode', 'DO_REGISTER');
 			$.ajax({
-				type: 'POST', async: false,
+				type: 'POST',// async: false,
 				url: '_exec.php',
 				data : fd,
 				dataType:"json",
@@ -155,7 +178,7 @@ $(document).ready(function() {
 
 		}, ChargeChance : function(option){
 			$.ajax({
-				type: 'POST', async: false,
+				type: 'POST',// async: false,
 				url: '_exec.php',
 				data: { 'mode' : 'CHARGE_CHANCE'
 					, 'chance_type' : option.chance_type },
@@ -167,7 +190,7 @@ $(document).ready(function() {
 
 		}, StartBtn : function(option){
 			$.ajax({
-				type: 'POST', async: false,
+				type: 'POST',// async: false,
 				url: '_exec.php',
 				data: {
 					'mode' : 'CHKSTART',
@@ -286,6 +309,13 @@ $(document).ready(function() {
 							option.gift4.bind()(req);
 						}
 					}
+					else if (req.result=='gift5')
+					{
+						if ( option.gift5 )
+						{
+							option.gift5.bind()(req);
+						}
+					}
 					else
 					{
 						//console.log('else');
@@ -331,7 +361,7 @@ $(document).ready(function() {
 				if(f.addr2)	obj.addr2= f.addr2.value;
 
 				//$.ajax({
-				//	type: 'GET', async: false,
+				//	type: 'GET',// async: false,
 				//	url: '_exec.php',
 				//	data: {'mode' : 'JOIN_GIFTf', 'mobile' : (mobile?'mob':'web')
 				//		, uname: obj.uname, pno1:obj.pno1, addr1:obj.addr1, addr2:obj.addr2 },
@@ -359,7 +389,7 @@ $(document).ready(function() {
 								{
 									if ( option.succ )
 									{
-										option.succ.bind()();
+										option.succ.bind()(req);
 									}
 								}
 								else if ( req.result=='limit3' ){
@@ -516,8 +546,7 @@ $(document).ready(function() {
 				contentType: "application/json; charset=utf-8",
 				url: "/api/notice/like",
 				data: JSON.stringify({ "id": id }),
-				dataType: "json",
-				async: false,
+				dataType: "json", //async: false,
 				success: function (json) {
 					if (json != null) {
 						if (json.result === "PLUS") {
@@ -730,7 +759,6 @@ $(document).ready(function() {
 
 				},
 				success: function(req) {
-					console.log( 'load', new Date().getTime() - start, req );
 
 					if (clear=='clear')
 					{
@@ -992,3 +1020,98 @@ $(document).ready(function() {
 		}
 	}; var S = new SNS();
 
+
+	window.loginCallback= function(req){
+		if (E.loginType=='start_btn')
+		{
+			E.StartBtn({
+				end: function(){
+					alert("캠페인이 종료 되었습니다.");
+				}
+				, start: function(){
+
+					E.ChargeChance({ chance_type:'use'
+						, callback:function(req){
+							$(".office span").html(req.chance_info.chance_cnt);
+
+							if (req.result=='o')
+							{
+								$('#modal-win input[name="agree"]').prop('checked',false);
+								clickd= true;
+								E.ChkWinner({
+									lose: function(req){
+										$(".office span").html(req.chance_info.chance_cnt);
+										iniGame(0);
+
+									}, gift: function(req){
+										window.win_info= req;
+										$(".office span").html(req.chance_info.chance_cnt);
+										$("#modal-win .win_detail .code").html(window.win_info.CHK +"_"+ window.win_info.win_time);
+										$("#modal-win input[name='uname']").val(req.chance_info.uname);
+										$("#modal-win input[name='pno1']").val(req.chance_info.pno);
+
+										iniGame(1);
+
+									}, gift2: function(req){
+										window.win_info= req;
+										$(".office span").html(req.chance_info.chance_cnt);
+										$("#modal-win .win_detail .code").html(window.win_info.CHK +"_"+ window.win_info.win_time);
+										$("#modal-win input[name='uname']").val(req.chance_info.uname);
+										$("#modal-win input[name='pno1']").val(req.chance_info.pno);
+
+										iniGame(2);
+
+									}, gift3: function(req){
+										window.win_info= req;
+										$(".office span").html(req.chance_info.chance_cnt);
+										$("#modal-win .win_detail .code").html(window.win_info.CHK +"_"+ window.win_info.win_time);
+										$("#modal-win input[name='uname']").val(req.chance_info.uname);
+										$("#modal-win input[name='pno1']").val(req.chance_info.pno);
+
+										iniGame(3);
+
+									}, gift4: function(req){
+										window.win_info= req;
+										$(".office span").html(req.chance_info.chance_cnt);
+										$("#modal-win .win_detail .code").html(window.win_info.CHK +"_"+ window.win_info.win_time);
+										$("#modal-win input[name='uname']").val(req.chance_info.uname);
+										$("#modal-win input[name='pno1']").val(req.chance_info.pno);
+
+										iniGame(4);
+
+									}, gift5: function(req){
+										window.win_info= req;
+										$(".office span").html(req.chance_info.chance_cnt);
+										$("#modal-win .win_detail .code").html(window.win_info.CHK +"_"+ window.win_info.win_time);
+										$("#modal-win input[name='uname']").val(req.chance_info.uname);
+										$("#modal-win input[name='pno1']").val(req.chance_info.pno);
+
+										iniGame(5);
+										
+									}, after:function(req){
+									}
+								});
+
+							}
+							else{
+								E.AlertMsg('modal-alert', '', '참여 가능기회가 모두 소진되었습니다.<br>매일 카톡 로그인후 10회의 기회가 주어집니다.<br>SNS공유로 룰렛 참여기회를 더 잡아보세요~' );
+							}
+						}
+					});
+				}
+			});
+		}
+	}
+	window.shareGift= function(){
+		setTimeout(function(){
+			E.ChargeChance({ chance_type:'sns'
+				, callback:function(req){
+					$(".office span").html(req.chance_info.chance_cnt);
+					if (req.res=='sns_today_already')
+					{
+						E.AlertMsg('modal-alert', '알림', '무분별한 SNS공유는 상대방과의 관계지속에 문제가 될수 있습니다.' );
+					}
+				}
+			});
+		},3000);
+	}

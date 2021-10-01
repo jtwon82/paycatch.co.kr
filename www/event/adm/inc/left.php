@@ -21,23 +21,30 @@
 <p style="text-align: center;"><img src="../images/left_menu_t.gif" /></p>
 <div class="left_menu">
 	<ul>
-<?if($_SESSION[LOGIN_LEVEL]==900){?>
+<?if($_SESSION[LOGIN_LEVEL]==100){?>
 		<li class='manager'>
 			<p class="depth1S"><a href="../manager/site_info.php">운영관리</a></p>
 			<ul class="depth2"><!-- 
 				<li><a href="../manager/popup_list.php">ㆍ팝업관리</a></li> -->
+				<li><a href="../manager/event_winner_cnt.php">ㆍ일자별당첨자</a></li>
 				<li><a href="../manager/site_info.php">ㆍ사이트정보관리</a></li>
 				<li><a href="../manager/rec_main.php" >ㆍ코드관리</a></li>
 			</ul>
 		</li>
-		<li class="member hide">
+		<li class="member ">
 			<p class="depth1S"><a href="../member/member_list.php">회원관리</a></p>
 			<ul class="depth2">
-				<li><a href="../member/member_list.php">ㆍ회원목록</a></li><!-- 
-				<li><a href="../member/out_list.php">ㆍ탈퇴회원관리</a></li> -->
+				<li><a href="../member/member_list.php">ㆍ회원목록</a></li>
+				<li><a href="../member/out_list.php">ㆍ탈퇴회원관리</a></li>
 			</ul>
 		</li>
 <?}?>
+		<li class="contract ">
+			<p class="depth1S"><a href="../contract/contract_list.php">응모내역</a></p>
+			<ul class="depth2">
+				<li><a href="../contract/contract_list.php">ㆍ응모내역</a></li>
+			</ul>
+		</li>
 		<li class="contents ">
 			<p class="depth1S"><a href="../contents/content_list.php">컨텐츠관리</a></p>
 			<ul class="depth2">
@@ -62,6 +69,8 @@
 		<li class="count">
 			<p class="depth1"><a href="../count/pno_list.php">접속통계</a></p>
 			<ul class="depth2">
+				<li><a href="../count/coupangurl_list.php">ㆍ쿠팡URL</a></li>
+				<li><a href="../count/stats_byday.php">ㆍ일자통계</a></li>
 				<li><a href="../count/pno_list.php">ㆍ전화번호 통계</a></li>
 				<li><a href="../count/path_list.php">ㆍ검색엔진별 통계</a></li>
 				<li><a href="../count/period_list.php">ㆍ기간별 통계</a></li>

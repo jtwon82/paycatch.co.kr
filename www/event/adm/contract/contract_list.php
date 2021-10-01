@@ -70,14 +70,17 @@ $(document).ready(function(){
 								<td>
 											<select name="search_key2" class="dSelect">
 												<option value="">--- 참여구분 ---</option>
-												<option value="mobile" <?=($search_key2=="mobile" ? " selected":"")?>>모바일</option>
+												<option value="mobile" <?=($search_key2=="mob" ? " selected":"")?>>모바일</option>
 												<option value="web" <?=($search_key2=="web" ? " selected":"")?>>웹</option>
 											</select>
 											<select name="search_key1" class="dSelect">
 												<option value="">--- 당첨구분 ---</option>
 												<option value="lose" <?=($search_key1=="lose" ? " selected":"")?>>꽝</option>
-												<option value="gift" <?=($search_key1=="gift" ? " selected":"")?>>모바일쿠폰</option>
-												<option value="addr" <?=($search_key1=="addr" ? " selected":"")?>>기프티박스</option>
+												<option value="losex" <?=($search_key1=="losex" ? " selected":"")?>>당첨</option>
+												<option value="gift" <?=($search_key1=="gift" ? " selected":"")?>>5회</option>
+												<option value="gift2" <?=($search_key1=="gift2" ? " selected":"")?>>모바일쿠폰2</option>
+												<option value="gift3" <?=($search_key1=="gift3" ? " selected":"")?>>모바일쿠폰3</option>
+												<option value="gift4" <?=($search_key1=="gift4" ? " selected":"")?>>모바일쿠폰4</option>
 											</select>
 											<select name="search_key" class="dSelect">
 												<option value="">--- 검색키 ---</option>
@@ -103,7 +106,9 @@ $(document).ready(function(){
 							if($search_key2){
 								$where.=" and mobile = '$search_key2'";
 							}
-							if($search_key1){
+							if($search_key1=='losex'){
+								$where.=" and win_type != 'lose'";
+							} else if ($search_key1){
 								$where.=" and win_type = '$search_key1'";
 							}
 							if($search_key){
@@ -138,17 +143,17 @@ $(document).ready(function(){
 							<thead>
 							<tr>
 								<th width="3%"><input type="checkbox" style="border:0" onClick="check_all(this,'idx[]')"></th>
-								<th width="4%">번호</th>
+								<th width="3%">번호</th>
 								<th width="8%">참여일</th>
+								<th width="7%">ip</th>
 								<th width="5%">이벤트구분</th>
 								<th width="5%">유입구분</th>
-								<th width="5%">모바일구분</th>
 								<th width="5%">이름</th>
 								<th width="7%">전화번호</th>
-								<th width="5%">공유정책</th>
+								<th width="7%">win_type</th>
+								<th width="7%">reason</th>
 								<th width="*">주소</th>
-								<th width="10%">내용</th>
-								<th width="7%">ip</th>
+								<th width="10%">ssn ID</th>
 								<th width="10%">chk ID</th>
 							</tr>
 							</thead>
@@ -160,12 +165,12 @@ $(document).ready(function(){
 
 							$start_num=($page-1)*$list_num;
 
-							$count=db_result("select count(*) from tbl_content $where");
+							$count=db_result("select count(*) from tbl_event $where");
 
 							$i=0;
 							$sql = "
 								select *
-								from tbl_content a
+								from tbl_event a
 								$where
 								order by idx desc 
 								limit $start_num, $list_num
@@ -182,11 +187,13 @@ $(document).ready(function(){
 								<td><?=$pList['reg_ip']?></td>
 								<td><?=$pList['event_gubun']?></td>
 								<td><?=$pList['referer']?></td>
-								<td><?=$pList['reg_ip']?></td>
-								<td><?=$pList['publicType']?></td>
-								<td><a href='javascript:;' onclick="proc('pno','<?=$pList['pno1']?>');"><?=$pList['pno1']?></a></td>
+								<td><?=$pList['uname']?></td>
+								<td><?=$pList['pno1']?></td>
+								<td><?=$pList['win_type']?></td>
+								<td><?=$pList['reason']?></td>
 								<td><?=$pList['addr1']?> <?=$pList['addr2']?></td>
-								<td><a href='javascript:;' onclick="proc('ssn','<?=$pList['ssn']?>');"><?=$pList['ssn']?></a></td>
+								<td><?=$pList['ssn']?></td>
+								<td><a href='javascript:;' onclick="proc('chk','<?=$pList['chk']?>');"><?=$pList['chk']?></a></td>
 							</tr>
 						<?
 								$i++;

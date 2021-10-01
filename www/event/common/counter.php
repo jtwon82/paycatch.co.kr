@@ -9,50 +9,50 @@
 	//검색엔진 키워드 저장
 	if($referer){
 
-		if(!eregi($_SERVER['HTTP_HOST'], $referer)){
+		if(!@eregi($_SERVER['HTTP_HOST'], $referer)){
 			$refer_key=@parse_url(urldecode($referer));
 			$site=$refer_key['host'];
 
 			$keyword=$refer_key['query'];
 			$time=time();
 
-			if(eregi("naver.com",$site) || eregi("naver.co.kr",$site) || eregi("naver.kr",$site) || eregi("naver.net",$site)){
+			if(@eregi("naver.com",$site) || @eregi("naver.co.kr",$site) || @eregi("naver.kr",$site) || @eregi("naver.net",$site)){
 				$site = "네이버";
 				$refer = explode("&query=",$referer);
 				$refer = explode("&",$refer[1]);
-				if(count($refer)>1 || eregi("utf8",$referer) || eregi("UTF-8",$referer)){
+				if(count($refer)>1 || @eregi("utf8",$referer) || @eregi("UTF-8",$referer)){
 					$keyword = urldecode($refer[0]);
-				}elseif(eregi("blogId=",$referer)){
+				}elseif(@eregi("blogId=",$referer)){
 					$keyword = "블로그";
 				}else{
 					$keyword = iconv("EUC-KR","UTF-8",urldecode($refer[0]));
 				}
-			}elseif(eregi("facebook.com",$site) || eregi("facebook.co.kr",$site)){
+			}elseif(@eregi("facebook.com",$site) || @eregi("facebook.co.kr",$site)){
 				$site = "facebook";
-				$refer = (eregi("&q=",$referer) ? explode("&q=",$referer) : explode("?q=",$referer));
+				$refer = (@eregi("&q=",$referer) ? explode("&q=",$referer) : explode("?q=",$referer));
 				$refer = explode("&",$refer[1]);
 				$keyword = urldecode($refer[0]);
-			}elseif(eregi("google.com",$site) || eregi("google.co.kr",$site)){
+			}elseif(@eregi("google.com",$site) || @eregi("google.co.kr",$site)){
 				$site = "구글";
-				$refer = (eregi("&q=",$referer) ? explode("&q=",$referer) : explode("?q=",$referer));
+				$refer = (@eregi("&q=",$referer) ? explode("&q=",$referer) : explode("?q=",$referer));
 				$refer = explode("&",$refer[1]);
 				$keyword = urldecode($refer[0]);
-			}elseif(eregi("daum.net",$site) || eregi("daum.com",$site)){
+			}elseif(@eregi("daum.net",$site) || @eregi("daum.com",$site)){
 				$site = "다음";
 				$refer = explode("&q=",$referer);
 				$refer = explode("&",$refer[1]);
 				$keyword = iconv("EUC-KR","UTF-8",urldecode($refer[0]));
-			}elseif(eregi("yahoo.com",$site) || eregi("yahoo.co.kr",$site)){
+			}elseif(@eregi("yahoo.com",$site) || @eregi("yahoo.co.kr",$site)){
 				$site = "야후";
-				$refer = (eregi("&p=",$referer) ? explode("&p=",$referer) : explode("?p=",$referer));
+				$refer = (@eregi("&p=",$referer) ? explode("&p=",$referer) : explode("?p=",$referer));
 				$refer = explode("&",$refer[1]);
 				$keyword = urldecode($refer[0]);
-			}elseif(eregi("nate.com",$site) || eregi("nate.co.kr",$site) || eregi("nate.kr",$site)){
+			}elseif(@eregi("nate.com",$site) || @eregi("nate.co.kr",$site) || @eregi("nate.kr",$site)){
 				$site = "네이트";
 				$refer = explode("&q=",$referer);
 				$refer = explode("&",$refer[1]);
 				$keyword = iconv("EUC-KR","UTF-8",urldecode($refer[0]));
-			}elseif(eregi("paran.com",$site) || eregi("paran.co.kr",$site)){
+			}elseif(@eregi("paran.com",$site) || @eregi("paran.co.kr",$site)){
 				$site = "파란";
 				$refer = explode("&Query=",$referer);
 				$refer = explode("&",$refer[1]);
@@ -98,7 +98,7 @@
 			);
 
 			foreach($oses as $os=>$pattern){
-				if(eregi($pattern, $userAgent)) {
+				if(@eregi($pattern, $userAgent)) {
 					return $os;
 				}
 			}

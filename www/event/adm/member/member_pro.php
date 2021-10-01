@@ -17,7 +17,7 @@
 //		$field['twitter']=anti_injection($_POST['twitter']);
 //		$field['content']=$_POST['content'];
 		$field['member_level']=anti_injection($_POST['member_level']);
-		$field['regdate']=date('Y-m-d h:i:s');
+		$field['reg_date']=date('Y-m-d h:i:s');
 
 		if(db_count("tbl_member","userid='$field[userid]'")>0){
 			msg_page("이미 가입된 아이디입니다.");

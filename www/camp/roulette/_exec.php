@@ -58,7 +58,7 @@
 
 	$folder			= explode("/",$_SERVER['PHP_SELF']);
 	$folder			= 'paycatch';
-	$info[1]		= array('name'=>'paycatch', 'sdate'=>'2021-09-11', 'edate'=>'2021-12-31');
+	$info[1]		= array('name'=>'paycatch', 'sdate'=>'2021-09-11', 'edate'=>'2023-12-31');
 
 
 	/////// DB에 들어갈 값들을 정리합니다. 
@@ -122,11 +122,7 @@
 				}
 				setcookie('SSN', $ssn, 0 );
 
-				$infoM = info_user_chance($ssn);
-				if ( $infoM[login_today]<1 ){
-					insert_user_chance2($reg_ip, $ssn, $ssn, 'login', 10);
-				}
-				$infoM = info_user_chance($ssn);
+				$infoM = charge_chance($reg_ip, $ssn, $ssn, 'login');
 				echo json_encode( array('result'=>'o', 'agree'=>$agree, 'chance_info'=>$infoM) );
 
 			}
@@ -138,29 +134,47 @@
 						VALUES('$reg_ip', now(), left(now(),10), '$ssn', '$ssn', '$uname', '$pno', '$agree')";
 				db_query($sql);
 
-				insert_user_chance2($reg_ip, $ssn, $ssn, 'login', 10);
-				$infoM = info_user_chance($ssn);
+				$infoM = charge_chance($reg_ip, $ssn, $ssn, 'login');
 				echo json_encode( array('result'=>'o', 'agree'=>$agree, 'chance_info'=>$infoM) );
 			}
 		break;
 
 
 		Case "CHARGE_CHANCE":
-			$infoM = info_user_chance($ssn);
 
-			if ( $chance_type == 'eeeee' ){
+					$sql = "
+					SELECT * FROM (
+						SELECT w.reg_dates, w.ssn, win_type, m.uname 
+						FROM tbl_event_winneruser w join tbl_member m on w.ssn=m.ssn
+						WHERE win_type IN('gift','gift2','gift3','gift4','gift5')
+					)a ORDER BY 1 DESC
+					";
+					$pRs=db_query($sql);
+					while($pList=db_fetch($pRs,'assoc')){
+						$pList[uname]= "*";
+						$rows[] = $pList;
+					}
 
-			}else if ( $chance_type == 'getInfo' ){
-				echo json_encode( array('result'=>'o', 'chance_info'=>$infoM, 'end'=>getMillisecond()-$start) );
-			
-			}else if ( $chance_type == 'use' ){
-				echo json_encode( charge_chance($reg_ip, $ssn, $CHK, 'use', -1));
-			
-			}else if ( $chance_type == 'gift' ){
-				echo json_encode( charge_chance($reg_ip, $ssn, $CHK, 'gift', 3));
+			if ( !isset($_SESSION[USER][LOGIN_ID]) ){
+				echo json_encode( array('result'=>'x', 'winner_list'=>$rows, 'end'=>getMillisecond()-$start) );
+			}
+			else{
+				$infoM = info_user_chance($ssn);
 
-			} else {
-				echo json_encode( array('result'=>'x', 'end'=>getMillisecond()-$start) );
+				if ( $chance_type == 'eeeee' ){
+
+				}else if ( $chance_type == 'getInfo' ){
+					echo json_encode( array('result'=>'o', 'chance_info'=>$infoM, 'winner_list'=>$rows, 'end'=>getMillisecond()-$start) );
+				
+				}else if ( $chance_type == 'use' ){
+					echo json_encode( charge_chance($reg_ip, $ssn, $CHK, 'use', -1));
+				
+				}else if ( $chance_type == 'sns' ){	// sns로 바꾸기
+					echo json_encode( charge_chance($reg_ip, $ssn, $CHK, 'sns', 2));
+
+				} else {
+					echo json_encode( array('result'=>'x', 'end'=>getMillisecond()-$start) );
+				}
 			}
 		break;
 
@@ -212,49 +226,52 @@
 
 				$attack = getUserIpIsAttac();
 
-				$sql = "
-				SELECT B.c FROM (SELECT 1 no) A, (
-					SELECT CASE
-						WHEN (select count(1) from tbl_event where reg_dates = left(now(), 10) and ssn = '$ssn' )>10000 THEN 'lose_overjoin'
-						WHEN left(now(),10)>'{$info[1][edate]}' then 'end'
-						WHEN 'true'='$attack' then 'lose_attack'
-						WHEN EXISTS( SELECT ssn FROM tbl_event_CHKER WHERE ssn='$ssn' AND reg_date < DATE_ADD( NOW( ) , INTERVAL - 60 SECOND ) GROUP BY ssn HAVING COUNT(*)>120 ) THEN 'lose_over1'
-						WHEN EXISTS( SELECT reg_ip FROM tbl_denyip WHERE event_gubun='$folder' AND reg_ip NOT LIKE '10.%' AND start_date = '{$info[1][name]}' AND reg_ip='$reg_ip' GROUP BY reg_ip HAVING SUM(win_cnt)>1) THEN 'lose_over2'
-						WHEN EXISTS( SELECT reg_date FROM tbl_event_CHKER a, ( SELECT paycatch_winner FROM tbl_site_config ) b WHERE win_type IS NOT NULL AND reg_date > DATE_ADD( NOW( ) , INTERVAL (paycatch_winner*-1) MINUTE ) ) THEN 'lose_overwin'
-						WHEN EXISTS( SELECT reg_date FROM tbl_event_CHKER WHERE chk = '$CHK' AND reg_date < DATE_ADD( NOW( ) , INTERVAL - 60 SECOND ) ) THEN 'lose_oversec'
-						WHEN EXISTS( SELECT pno FROM tbl_event_winnerpno WHERE start_date = '{$info[1][name]}' AND pno='$pno1' ) THEN 'lose_overlab'
-						WHEN NOT EXISTS( SELECT NOW( ) FROM tbl_event_CHKER WHERE chk = '$CHK' ) THEN 'lose_over30'
-						else
-							(
-								select case 
-									WHEN	/* 30% 안에 들고 */
-											(RAND()*100) <= paycatch_pct
-										THEN 
-											case
-												when idx<=30 and b.gift < paycatch_gift then 'gift'	/* gift1 */
-												when idx<=60 and b.gift2 < paycatch_gift2 then 'gift2'	/* gift2 */
-												when idx<=100 and b.gift3 < paycatch_gift3 then 'gift3'	/* gift3 */
-												else 'lose_pct'
-											end
-										ELSE 'lose_else' END gg
-								from (
-										select (RAND()*100) idx
-									) a, (
-										select
-											ifnull(sum(web_gift + mob_gift),0) gift
-											, ifnull(sum(web_gift2 + mob_gift2),0) gift2
-											, ifnull(sum(web_gift3 + mob_gift),0) gift3
-										from tbl_event_sum 
-										where reg_dates=left(now(), 10)
-									) b, (
-										select 
-											paycatch_pct, paycatch_gift, paycatch_gift2, paycatch_gift3
-										from tbl_site_config
-										limit 0 UNION ALL SELECT 100, 10, 10, 10 LIMIT 1
-									) c
-							)
-						end c
-				)B
+				$sql= "
+					select CASE
+						WHEN	/* 30% 안에 들고 */
+								(RAND()*100) <= pct
+							THEN
+								CASE
+									WHEN left(NOW(),10)>'{$info[1][edate]}' then 'end'
+									WHEN 'true'='$attack' then 'lose_attack'
+									WHEN EXISTS( SELECT 1 FROM tbl_event_CHKER WHERE chk='$CHK' AND reg_date < DATE_ADD( NOW() , INTERVAL - 60 SECOND ) ) THEN 'lose_oversec'	/* 60초안에 시작 */
+									WHEN EXISTS( SELECT 1 FROM tbl_event_CHKER WHERE ssn='$ssn' AND reg_date < DATE_ADD( NOW() , INTERVAL - 60 SECOND ) GROUP BY ssn HAVING COUNT(*)>1000 ) THEN 'lose_over1' /* 60초안에 시도한횟수 */
+									WHEN EXISTS( SELECT 1 FROM tbl_event_CHKER a WHERE win_type IS NOT NULL AND reg_date > DATE_ADD( NOW() , INTERVAL -30 SECOND ) ) THEN 'lose_overwin'	/* 30초안에 당첨된 */
+									WHEN EXISTS( SELECT 1 FROM tbl_event_winneruser
+										WHERE reg_dates=left(now(),10) and event_gubun='$folder' AND ssn='$ssn' AND pno='{$pno1}{$pno2}{$pno3}' AND win_type!='gift'
+										GROUP BY reg_dates HAVING SUM(win_cnt)>=1 ) THEN 'lose_over2'
+									WHEN EXISTS( SELECT 1 FROM tbl_event_winneruser
+										WHERE reg_dates=left(now(),10) and event_gubun='$folder' AND ssn='$ssn' AND pno='{$pno1}{$pno2}{$pno3}' AND win_type='gift'
+										GROUP BY reg_dates HAVING SUM(win_cnt)>50 ) THEN 'lose_over3'
+									WHEN EXISTS( SELECT 1 from tbl_event where reg_dates=left(NOW(), 10) and ssn='$ssn' GROUP BY ssn HAVING COUNT(1)>1000 ) THEN 'lose_overjoin'
+									when idx<=80 and b.gift < c.gift then 'gift'	/* gift 5 chance */
+									when idx<=85 and b.gift2 < c.gift2 then 'gift2'	/* gift2 coffee */
+									when idx<=90 and b.gift3 < c.gift3 then 'gift3'	/* gift3 nPay1000 */
+									when idx<=95 and b.gift4 < c.gift4 then 'gift4'	/* gift4 nPay5000 */
+									when idx<=100 and b.gift5 < c.gift5 then 'gift5'	/* gift5 cu5000 */
+									else 'lose_pct'
+								END
+							ELSE 'lose_else' END c
+					FROM (
+							SELECT (RAND()*100) idx
+						) a, (
+							SELECT
+								ifnull(sum(web_gift + mob_gift),0) gift
+								, ifnull(sum(web_gift2 + mob_gift2),0) gift2
+								, ifnull(sum(web_gift3 + mob_gift3),0) gift3
+								, ifnull(sum(web_gift4 + mob_gift4),0) gift4
+								, ifnull(sum(web_gift5 + mob_gift5),0) gift5
+							FROM tbl_event_sum 
+							WHERE reg_dates=left(NOW(), 10)
+						) b, (
+							select * from (
+								SELECT 
+									0 g, pct, gift, gift2, gift3, gift4, gift5
+								FROM tbl_gift_config where reg_dates = left(now(),10)
+								UNION ALL SELECT 1, 40, 10000, 0, 0, 0, 0
+							)a where g= case when DATE_FORMAT(now(),'%H') BETWEEN 0 AND 10 then 1 else 0 end
+							UNION ALL SELECT 2, 40, 10000, 1, 1, 1, 1 limit 1
+						) c
 				";
 				$rs = db_select($sql);
 				if($rs[c]=='' || empty($rs[c]) || is_null($rs[c])
@@ -264,9 +281,11 @@
 					$rs[c]='lose';
 				}
 
-				$tag['gift']='<img src="/camp/roulette/img/event_kv02_coupon2.png">';
-				$tag['gift2']='<img src="/camp/roulette/img/event_kv02_coupon3.png">';
-				$tag['gift3']='<img src="/camp/roulette/img/event_kv02_coupon4.png">';
+				$tag['gift']='<img src="http://arteriver.cdn3.cafe24.com/camp/roulette/img/event_kv02_coupon.png">';
+				$tag['gift2']='<img src="http://arteriver.cdn3.cafe24.com/camp/roulette/img/event_kv02_coupon2.png">';
+				$tag['gift3']='<img src="http://arteriver.cdn3.cafe24.com/camp/roulette/img/event_kv02_coupon3.png">';
+				$tag['gift4']='<img src="http://arteriver.cdn3.cafe24.com/camp/roulette/img/event_kv02_coupon4.png">';
+				$tag['gift5']='<img src="http://arteriver.cdn3.cafe24.com/camp/roulette/img/event_kv02_coupon5.png">';
 
 				if( $rs[c]=='end' ){
 					echo json_encode( array('result'=>'end') );
@@ -290,9 +309,8 @@
 						$pno1	= base64_encode($pno1);
 						$sql = "insert into tbl_event_joiner(event_gubun, reg_date, reg_dates, ssn, chk, win_type, reason, mobile, reg_ip, referer, uname, pno1, share_desc )
 							values('{$info[1][name]}', now(), left(now(), 10), '$ssn', '$CHK', 'lose', '$reason', '$mobile', '$reg_ip', '$referer', '$uname', '$pno1', '$snsType' )";
-						db_query($sql);
+						#db_query($sql);
 
-						#$t= charge_chance($reg_ip, $ssn, $CHK, 'gift', 2);
 						$chance_info= info_user_chance($ssn);
 
 						echo json_encode( array('result'=>'lose', 'losetype'=>$rs[c], 'chance_info'=>$chance_info ) );
@@ -333,11 +351,13 @@
 
 			$gift = base64_decode($_COOKIE[date('Ymd')]);
 
-			$sql = "select IFNULL(SUM(win_cnt),0)win_cnt from tbl_event_winnerpno where start_date = '{$info[1][name]}' AND gift_type = '$gift' AND pno='{$pno1}{$pno2}{$pno3}' ";
+			$sql = "select CASE WHEN '$gift'='gift' THEN 0 ELSE IFNULL(SUM(win_cnt),0) END win_cnt from tbl_event_winneruser
+					where reg_dates=left(now(),10) and event_gubun='$folder' AND ssn='$ssn' AND pno='{$pno1}{$pno2}{$pno3}' AND win_type='$gift' ";
 			$rs = db_select($sql);
 
-			if ( $rs[win_cnt]>=5 ) {
-				$sql = "UPDATE tbl_event_winnerpno SET over_cnt = over_cnt+1 WHERE start_date = '{$info[1][name]}' AND gift_type = '$gift' AND pno='{$pno1}{$pno2}{$pno3}'";
+			if ( $rs[win_cnt]>=1 ) {
+				$sql = "UPDATE tbl_event_winneruser SET over_cnt=over_cnt+1 
+					where reg_dates=left(now(),10) and event_gubun='$folder' and reg_ip='$reg_ip' AND ssn='$ssn' AND pno='{$pno1}{$pno2}{$pno3}' AND win_type='$gift' ";
 				db_query($sql);
 
 				echo json_encode( array('result'=>'limit3') );
@@ -396,28 +416,31 @@
 
 				db_query("INSERT INTO tbl_event_winnerhistory(reg_date, reg_dates, ssn, uname, pno) select now(), left(now(),11), '$ssn', '$uname', '{$pno1}{$pno2}{$pno3}' ON DUPLICATE KEY UPDATE update_date=now(), cnt=cnt+1 ");
 
-				setcookie('CHK', "", 0);
-				setcookie(date('Ymd'), "", 0);
-
+				if( $gift=='gift' ){
+					$infoM = charge_chance($reg_ip, $ssn, $CHK, 'gift', 5);
+				}
+				else{
+					$infoM[chance_info] = info_user_chance($ssn);
+				}
 				$sql = "
-					INSERT INTO tbl_denyip(reg_date, event_gubun, start_date, reg_ip, win_type, win_cnt)
-						SELECT now(), '$folder', '{$info[1][name]}', '$reg_ip' reg_ip, '$gift' win_type, 1 win_cnt
+					INSERT INTO tbl_event_winneruser(reg_date, reg_dates, event_gubun, reg_ip, ssn, pno, win_type, win_cnt)
+						SELECT now(), left(now(),10), '$folder', '$reg_ip', '$ssn', '$pno1', '$gift', 1
 					ON DUPLICATE KEY UPDATE win_cnt = win_cnt+1, update_date = now()
 				";
-				db_query($sql);
-
-				$sql = "INSERT INTO tbl_event_winnerpno(start_date, gift_type, pno) select '{$info[1][name]}', '$gift', '{$pno1}{$pno2}{$pno3}' pno ON DUPLICATE KEY UPDATE win_cnt=win_cnt+1 ";
 				db_query($sql);
 
 				db_query("INSERT INTO tbl_event_sum(reg_dates, {$mobile}_{$gift}) VALUES(LEFT(NOW(),10), 1) ON DUPLICATE KEY UPDATE {$mobile}_{$gift} = {$mobile}_{$gift} + 1;");
 
 				db_query("UPDATE tbl_member SET pno='$pno1', uname='$uname' WHERE ssn='$ssn'");
+
+				setcookie('CHK', "", 0);
+				setcookie(date('Ymd'), "", 0);
 				
 				#$param			= array( 'mode'=>'SEND_SMS', 'CHK'=>$CHK );
 				#$SEND_RESULT	= httpPost("http://db-studio.dbins-promy.com:8081/_exec.php", $param);
 				#db_query("insert into tbl_event_result(ssn, chk, pno1, win_type, reg_date, reg_dates) values('$ssn', '$CHK', '$pno1', '$gift', now(), left(now(),10))");
 
-				echo json_encode( array('result'=>'o') );
+				echo json_encode( array('result'=>'o', 'chance_info'=>$infoM[chance_info]) );
 			}
 			else{
 				echo json_encode( array('result'=>'x', 'win_time'=>time(), 'chk'=>$CHK) );
@@ -458,7 +481,7 @@
 			#$param = array('EVENT_ID'=>'918', 'GOODS_ID'=>'0000005904', 'ORDER_CNT'=>1, 'RECEIVERMOBILE'=>$rs[pno1], 'USER_ID'=>$CHK, 'TR_ID'=>$CHK.getToken(3) );
 			#$url = "http://tcorp.coufun.kr/b2c_api/coufunSend.do";
 			#$url = "https://corp.coufun.kr:446/coupon/couponCreate.do";
-			#print_r($param);exit;
+			print_r($param);exit;
 			#http://db-studio.dbins-promy.com:8081/_exec.php?mode=SEND_SMS&ssn=5TR2WE6762BDI1Z&CHK=4A2ZGEDL8HZ830V&win_type=gift3
 
 			if($dbchk && $param[GOODS_ID]!=''){
@@ -535,14 +558,14 @@
 					$pList[reply_cnt]= count($comment);
 					$pList[title]= stripslashes($pList[title]);
 
-					$row[] = $pList;
+					$rows[] = $pList;
 				}
 
 				// 좌우 버튼만 있는함수
 				#$paging = page_list_onlynpbtn($page, $count, $list_num, $page_num, "window.boardLoad({page})", "", "<img src='images/section2_list_arrow_prev.png'>", "<img src='images/section2_list_arrow_next.png'>", "");
 
 				$end = getMillisecond() - $start;
-				$result= json_encode( array('result'=>'o', 'list'=>$row, 'count'=>$count, 'end'=>$end) );
+				$result= json_encode( array('result'=>'o', 'list'=>$rows, 'count'=>$count, 'end'=>$end) );
 				session_write_close();
 				#file_put_contents("/home/dongsuh/www.oreo-event.com/upfile/{$g}_{$page}.json", $result);
 			}
@@ -687,24 +710,20 @@
 
 
 		Case "MY_GIFT":
-			$infoM = db_select("select uname from event_oreoday_member where ssn='$ssn'");
+			$infoM = db_select("select uname from tbl_member where ssn='$ssn'");
 
 			$sql = "
 			SELECT * FROM (
-				SELECT idx, LEFT(c.reg_dates,7)ym, DATE_FORMAT(c.reg_dates,'%m')m, c.reg_dates, c.ssn, c.chk, pno1, win_type
-				FROM event_oreoday c 
-				WHERE c.ssn='$ssn' AND win_type IN('gift','gift2','gift3','gift4')
-				UNION ALL
-				SELECT idx, LEFT(c.reg_dates,7)ym, DATE_FORMAT(c.reg_dates,'%m')m, c.reg_dates, c.ssn, c.chk, pno1, win_type
-				FROM event_oreoday_addwinner c 
-				WHERE ssn='$ssn' AND win_type IN('gift','gift2','gift3','gift4')
-			)a ORDER BY idx DESC LIMIT 1
+				SELECT idx, reg_dates, win_type
+				FROM tbl_event c
+				WHERE c.ssn='$ssn' AND win_type IN('gift','gift2','gift3','gift4','gift5')
+			)a ORDER BY 1 DESC
 			";
 			$pRs=db_query($sql);
 			while($pList=db_fetch($pRs,'assoc')){
-				$row[] = $pList;
+				$rows[] = $pList;
 			}
-			echo json_encode( array('result'=>'o', 'uname'=>$infoM[uname], 'list'=>$row) );
+			echo json_encode( array('result'=>'o', 'uname'=>$infoM[uname], 'list'=>$rows) );
 		break;
 
 
@@ -721,8 +740,8 @@
 
 		Case "CLEAR" :
 			$sql = "
-				DELETE c FROM event_oreoday_CHKER c, ( SELECT paycatch_winner FROM tbl_site_config WHERE reg_dates = LEFT(NOW(), 10) AND event_gubun='oreoday' ) b
-					WHERE reg_date < DATE_ADD( NOW( ) , INTERVAL paycatch_winner*-1 MINUTE )
+				DELETE c FROM tbl_event_CHKER c, ( SELECT winner FROM tbl_gift_config WHERE reg_dates = LEFT(NOW(), 10) AND event_gubun='oreoday' ) b
+					WHERE reg_date < DATE_ADD( NOW( ) , INTERVAL winner*-1 MINUTE )
 			";
 			db_query($sql);
 
