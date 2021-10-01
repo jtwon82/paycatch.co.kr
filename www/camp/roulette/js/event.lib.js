@@ -22,7 +22,7 @@ $(document).ready(function() {
 			content : {
 				title : 'PayCatch if you can!',
 				description : 'NPay를 잡아라! 매일 주어지는 룰렛 이벤트 참여 기회 이번엔 내가 가져간다!',
-				imageUrl : 'http://www.paycatch.co.kr/camp/roulette/img/thumb.png',
+				imageUrl : 'http://arteriver.cdn3.cafe24.com/camp/roulette/img/thumb.jpg',
 				link : {
 					mobileWebUrl : 'http://www.paycatch.co.kr/gate.php?ssn='+ssn,
 					webUrl : 'http://www.paycatch.co.kr/gate.php?ssn='+ssn
@@ -45,7 +45,7 @@ $(document).ready(function() {
 			content : {
 				title : 'PayCatch if you can!',
 				description : 'NPay를 잡아라! 매일 주어지는 룰렛 이벤트 참여 기회 이번엔 내가 가져간다!',
-				imageUrl : 'http://www.paycatch.co.kr/camp/roulette/img/thumb.jpg',
+				imageUrl : 'http://arteriver.cdn3.cafe24.com/camp/roulette/img/thumb.jpg',
 				link : {
 					mobileWebUrl : 'http://www.paycatch.co.kr/gate.php?ssn='+ssn,
 					webUrl : 'http://www.paycatch.co.kr/gate.php?ssn='+ssn
@@ -68,7 +68,7 @@ $(document).ready(function() {
 			content : {
 				title : 'PayCatch if you can!',
 				description : 'NPay를 잡아라! 매일 주어지는 룰렛 이벤트 참여 기회 이번엔 내가 가져간다!',
-				imageUrl : 'http://www.paycatch.co.kr/camp/roulette/img/thumb.jpg',
+				imageUrl : 'http://arteriver.cdn3.cafe24.com/camp/roulette/img/thumb.jpg',
 				link : {
 					mobileWebUrl : 'http://www.paycatch.co.kr/gate.php?ssn='+ssn,
 					webUrl : 'http://www.paycatch.co.kr/gate.php?ssn='+ssn

@@ -269,7 +269,7 @@
 									0 g, pct, gift, gift2, gift3, gift4, gift5
 								FROM tbl_gift_config where reg_dates = left(now(),10)
 								UNION ALL SELECT 1, 40, 10000, 0, 0, 0, 0
-							)a where g= case when DATE_FORMAT(now(),'%H') BETWEEN 0 AND 10 then 1 else 0 end
+							)a where g= case when DATE_FORMAT(now(),'%H') BETWEEN 0 AND 9 then 1 else 0 end
 							UNION ALL SELECT 2, 40, 10000, 1, 1, 1, 1 limit 1
 						) c
 				";
